@@ -1,0 +1,15 @@
+#!/bin/bash
+
+WORK_DIR="/global/cfs/projectdirs/atlas/jashley"
+cd ${WORK_DIR}
+echo "Switched to working directory ${WORK_DIR}"
+
+SIM_OUTPUT_DIR="/global/cfs/projectdirs/atlas/jashley/mjolnir/data/beta/MAIA/bg/"
+
+export MUPLUS="/global/cfs/cdirs/atlas/spgriso/MuonCollider/data/bib/10TeV-2024/MAIA/sim_mp"
+export MUMINUS="/global/cfs/cdirs/atlas/spgriso/MuonCollider/data/bib/10TeV-2024/MAIA/sim_mm"
+
+SIM_FILE="${SIM_OUTPUT_DIR}output_sim_training.slcio"
+GEOMETRY_FILE="mjolnir/data/geometries/detector-simulation/geometries/MAIA_v0/MAIA_v0.xml"
+
+k4run mjolnir/code/TrkHitsStudiesWorkspace/configs/digi_steer_MAIAv0.py --LcioEvent.Files ${SIM_FILE} --DD4hepXMLFile ${GEOMETRY_FILE} --OverlayFullPathToMuPlus ${MUPLUS} --OverlayFullPathToMuMinus ${MUMINUS} --OverlayFullNumberBackground 883 --doOverlayFull

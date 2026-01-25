@@ -1,0 +1,6 @@
+Loading LCIO ROOT dictionaries ...
+Reading file data/beta/MAIA/bg/output_digi_light_eval.slcio
+Event 0 has
+  920652 hits in VXDBarrelHits
+Total VXB clusters 920652 and on layer0 265305
+ROOT file '/global/cfs/projectdirs/atlas/jashley/mjolnir/data/beta/Hits_TTree_output_digi_light_eval.root' with tree 'HitTree' created.

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+WORK_DIR="/global/cfs/projectdirs/atlas/jashley"
+cd ${WORK_DIR}
+echo "Switched to working directory ${WORK_DIR}"
+
+NUM_EVENTS=$1
+STEERING_FILE="mjolnir/code/TrkHitsStudiesWorkspace/configs/digi_steer_MuSICv2.py"
+EVENT_FILES="/global/cfs/projectdirs/atlas/arastogi/MuonCollider/data/MuSIC_v2/Sim/pt0-5000GeV_n10000_pdg13_MusicV2/"
+GEOMETRY_FILE="mjolnir/data/geometries/lcgeo/MuColl/MuSIC_v2/MuSIC_v2.xml"
+echo "Feeding ${NUM_EVENTS} event data files into ${STEERING_FILE}"
+echo "    Event file source directory: ${EVENT_FILES}"
+echo "    Geometry file: ${GEOMETRY_FILE}"
+
+# Randomly pick files, save, and run
+PICKED_EVENT_FILES=$(ls -1 "${EVENT_FILES}" | shuf | head -n "${NUM_EVENTS}" | sed "s|^|${EVENT_FILES}|")
+k4run ${STEERING_FILE} --LcioEvent.Files ${PICKED_EVENT_FILES} --DD4hepXMLFile ${GEOMETRY_FILE} \
+	-n 5000 > output_from_term_MuSIC.txt
+
+OUTPUT_DIR="/global/cfs/projectdirs/atlas/jashley/mjolnir/data/beta/MuSIC/signal/"
+mv output_* ${OUTPUT_DIR}
+
+TTREE_SCRIPT="mjolnir/code/beta/create-input/createTTree.py"
+python ${TTREE_SCRIPT} -i "${OUTPUT_DIR}output_digi_light.slcio"

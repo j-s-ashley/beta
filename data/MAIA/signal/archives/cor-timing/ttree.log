@@ -1,0 +1,46 @@
+Loading LCIO ROOT dictionaries ...
+Reading file data/beta/MAIA/signal/output_digi_light_training.slcio
+Event 0 has
+      4 hits in ITBarrelHits
+      0 hits in ITEndcapHits
+      1 hits in OTBarrelHits
+      4 hits in OTEndcapHits
+      4 hits in VXDBarrelHits
+      2 hits in VXDEndcapHits
+Loading LCIO ROOT dictionaries ...
+Reading file data/beta/MAIA/signal/output_digi_light_eval.slcio
+Event 0 has
+      3 hits in ITBarrelHits
+      0 hits in ITEndcapHits
+      2 hits in OTBarrelHits
+      1 hits in OTEndcapHits
+      3 hits in VXDBarrelHits
+      1 hits in VXDEndcapHits
+Loading LCIO ROOT dictionaries ...
+Reading file data/beta/MAIA/bg/output_digi_light_eval.slcio
+Event 0 has
+  3235518 hits in ITBarrelHits
+  1038279 hits in ITEndcapHits
+  2282957 hits in OTBarrelHits
+  935039 hits in OTEndcapHits
+  920652 hits in VXDBarrelHits
+  927934 hits in VXDEndcapHits
+Hits_TTree_output_digi_light_eval.root
+Hits_TTree_output_digi_light_training.root
+MAIA-merged-sim.slcio
+archives
+output_digi_eval.root
+output_digi_light_eval.slcio
+output_digi_light_training.slcio
+output_digi_training.root
+Hits_TTree_output_digi_light_eval.root
+Hits_TTree_output_digi_light_training.root
+archives
+output_digi_eval.root
+output_digi_light_eval.slcio
+output_digi_light_training.slcio
+output_digi_training.root
+output_gen_eval.slcio
+output_gen_training.slcio
+output_sim_eval.slcio
+output_sim_training.slcio

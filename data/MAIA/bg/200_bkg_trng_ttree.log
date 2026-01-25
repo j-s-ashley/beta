@@ -1,0 +1,6 @@
+Loading LCIO ROOT dictionaries ...
+Reading file /global/cfs/cdirs/atlas/juliet/work/mcd-utils/run/MAIA_v0/RealDigi/K4run/WithBIB/MAIAvxb200_MS_1_0-0.slcio
+Event 0 has
+  158449 hits in VXDBarrelHits
+Total VXB clusters 158449 and on layer0 59684
+ROOT file '/global/cfs/projectdirs/atlas/jashley/mjolnir/data/beta/Hits_TTree_MAIAvxb200_MS_1_0-0.root' with tree 'HitTree' created.

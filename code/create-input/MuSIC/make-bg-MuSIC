@@ -1,0 +1,20 @@
+#!/bin/bash
+
+WORK_DIR="/global/cfs/projectdirs/atlas/jashley"
+cd ${WORK_DIR}
+echo "Switched to working directory ${WORK_DIR}"
+
+python mucoll-benchmarks/generation/pgun/pgun_lcio.py -e 1 --pdg 14 --p 100 --theta 10 170 -- output_gen_training.slcio
+
+ddsim --steeringFile mucoll-benchmarks/simulation/ilcsoft/steer_baseline.py --inputFile output_gen.slcio --outputFile output_sim_training.slcio
+
+SIM_OUTPUT_DIR="/global/cfs/projectdirs/atlas/jashley/mjolnir/data/beta/MuSIC/bg/"
+mv output_* ${SIM_OUTPUT_DIR}
+
+export MUPLUS="/global/cfs/cdirs/atlas/spgriso/MuonCollider/data/bib/10TeV-2024/MusicV2/trimmed/MuPlus"
+export MUMINUS="/global/cfs/cdirs/atlas/spgriso/MuonCollider/data/bib/10TeV-2024/MusicV2/trimmed/MuMinus"
+
+SIM_FILE="${SIM_OUTPUT_DIR}output_sim_training.root"
+GEOMETRY_FILE="mjolnir/data/geometries/lcgeo/MuColl/MuSIC_v2/MuSIC_v2.xml"
+
+k4run mjolnir/code/TrkHitsStudiesWorkspace/configs/digi_steer_MuSICv2.py --LcioEvent.Files ${SIM_FILE} --DD4hepXMLFile ${GEOMETRY_FILE} --OverlayFullPathToMuPlus ${MUPLUS} --OverlayFullPathToMuMinus ${MUMINUS} --OverlayFullNumberBackground 6 --doOverlayFull

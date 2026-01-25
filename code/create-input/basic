@@ -1,0 +1,34 @@
+#!/bin/bash
+
+WORK_DIR="/global/cfs/projectdirs/atlas/jashley"
+cd ${WORK_DIR}
+echo "Switched to working directory ${WORK_DIR}"
+
+echo "Starting === EVENT GENERATION ==="
+NUM_EVENTS=10
+PDG_ID=13 # 11 - electron, 13 - muon, 14 - muon neutrino
+MOMENTUM=100 # GeV
+THETA_MIN=10
+THETA_MAX=170
+GEN_FILE_NAME="output_gen_basic.slcio"
+GEN_LOG="basic_gen.log"
+python mucoll-benchmarks/generation/pgun/pgun_lcio.py -e ${NUM_EVENTS} --pdg ${PDG_ID} --p ${MOMENTUM} --theta ${THETA_MIN} ${THETA_MAX} -- ${GEN_FILE_NAME} | tee ${GEN_LOG}
+echo "Created file ${GEN_FILE_NAME}"
+
+echo "STARTING === SIMULATION ==="
+SIM_FILE_NAME="output_sim_basic.slcio"
+SIM_LOG="basic_sim.log"
+ddsim --steeringFile mucoll-benchmarks/simulation/ilcsoft/steer_baseline.py --inputFile ${GEN_FILE_NAME} --outputFile ${SIM_FILE_NAME} | tee ${SIM_LOG}
+echo "Created file ${SIM_FILE_NAME}"
+
+echo "Starting === DIGITIZATION ==="
+echo "             MAIA - without BIB"
+GEOMETRY_FILE="mjolnir/data/geometries/detector-simulation/geometries/MAIA_v0/MAIA_v0.xml"
+DIGI_LOG="basic_digi.log"
+k4run mjolnir/code/TrkHitsStudiesWorkspace/configs/digi_steer_MAIAv0.py --LcioEvent.Files ${SIM_FILE_NAME} --DD4hepXMLFile ${GEOMETRY_FILE}  | tee ${DIGI_LOG}
+
+#echo "             MAIA - with BIB"
+#export MUPLUS="/global/cfs/cdirs/atlas/spgriso/MuonCollider/data/bib/10TeV-2024/MAIA/sim_mp"
+#export MUMINUS="/global/cfs/cdirs/atlas/spgriso/MuonCollider/data/bib/10TeV-2024/MAIA/sim_mm"
+#GEOMETRY_FILE="mjolnir/data/geometries/detector-simulation/geometries/MAIA_v0/MAIA_v0.xml"
+#k4run mjolnir/code/TrkHitsStudiesWorkspace/configs/digi_steer_MAIAv0.py --LcioEvent.Files ${SIM_FILE_NAME} --DD4hepXMLFile ${GEOMETRY_FILE} --OverlayFullPathToMuPlus ${MUPLUS} --OverlayFullPathToMuMinus ${MUMINUS} --OverlayFullNumberBackground 883 --doOverlayFull

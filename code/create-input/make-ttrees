@@ -1,0 +1,55 @@
+#!/bin/bash
+
+WORK_DIR="/global/cfs/projectdirs/atlas/jashley/mjolnir"
+cd ${WORK_DIR}
+echo "Switched to working directory ${WORK_DIR}"
+
+# Input directories
+SIG_DIR="/global/cfs/cdirs/atlas/juliet/work/TrkHitsStudiesWorkspace/run/particleGunMuons/digitizedMuon/MAIA"
+BKG_DIR="/global/cfs/cdirs/atlas/juliet/work/mcd-utils/run/MAIA_v0/RealDigi/K4run/WithBIB"
+
+# Output subdirectories
+TTR_PRE="data/beta/Hits_TTree_" # TTree subdirectory and prefix
+SIG_OUT="data/beta/MAIA/signal"
+BKG_OUT="data/beta/MAIA/bg"
+
+# NOTE: 50 micron sensor data already created at time of script writing
+SENSOR_THICKNESSES=(
+    75
+    100
+    200
+    400
+)
+
+for i in "${SENSOR_THICKNESSES[@]}"; do
+    echo "Creating TTrees from === ${i} === micron sensor data"
+    # SIGNAL - training data
+    python code/beta/create-input/createTTree.py \
+        -i ${SIG_DIR}/VXB${i}/output_digi_MS_5kMuons_10_170Theta_0_5TeV_1.slcio \
+        | tee ${i}_sig_trng_ttree.log
+    mv ${TTR_PRE}output_digi_MS_5kMuons_10_170Theta_0_5TeV_1.root ${SIG_OUT}/${i}_sig_trng_ttree.root
+    mv ${i}_sig_trng_ttree.log ${SIG_OUT}/
+    # SIGNAL - evaluation data
+    python code/beta/create-input/createTTree.py \
+        -i ${SIG_DIR}/VXB${i}/output_digi_MS_5kMuons_10_170Theta_0_5TeV_2.slcio \
+        | tee ${i}_sig_eval_ttree.log
+    mv ${TTR_PRE}output_digi_MS_5kMuons_10_170Theta_0_5TeV_2.root ${SIG_OUT}/${i}_sig_eval_ttree.root
+    mv ${i}_sig_eval_ttree.log ${SIG_OUT}/
+    # BACKGROUND - training data
+    python code/beta/create-input/createTTree.py \
+        -i ${BKG_DIR}/MAIAvxb${i}_MS_1_0-0.slcio \
+        | tee ${i}_bkg_trng_ttree.log
+    mv ${TTR_PRE}MAIAvxb${i}_MS_1_0-0.root ${BKG_OUT}/${i}_bkg_trng_ttree.root
+    mv ${i}_bkg_trng_ttree.log ${BKG_OUT}/
+    # BACKGROUND - evaluation data
+    python code/beta/create-input/createTTree.py \
+        -i ${BKG_DIR}/MAIAvxb${i}_MS_2_0-0.slcio \
+        | tee ${i}_bkg_eval_ttree.log
+    mv ${TTR_PRE}MAIAvxb${i}_MS_2_0-0.root ${BKG_OUT}/${i}_bkg_eval_ttree.root
+    mv ${i}_bkg_eval_ttree.log ${BKG_OUT}/
+done
+
+echo "Contents of signal data directory:"
+ls ${SIG_OUT}
+echo "Contents of background data directory:"
+ls ${BKG_OUT}

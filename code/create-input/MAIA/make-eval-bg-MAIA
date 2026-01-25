@@ -1,0 +1,54 @@
+#!/bin/bash
+
+date
+WORK_DIR="/global/cfs/projectdirs/atlas/jashley"
+cd ${WORK_DIR}
+echo "Switched to working directory ${WORK_DIR}"
+echo "Working directory contents:"
+ls
+
+echo "=== Creating EVALUATION files for MAIA background ==="
+echo "Generating..."
+python mucoll-benchmarks/generation/pgun/pgun_lcio.py -e 1 --pdg 14 --p 100 --theta 10 170 -- output_gen_eval.slcio
+echo "Generation complete"
+echo "Working directory contents:"
+ls
+
+echo "Simulating..."
+ddsim --steeringFile mucoll-benchmarks/simulation/ilcsoft/steer_baseline.py --inputFile output_gen_eval.slcio --outputFile output_sim_eval.slcio
+echo "Simulation complete"
+echo "Working directory contents:"
+ls
+
+OUTPUT_DIR="/global/cfs/projectdirs/atlas/jashley/mjolnir/data/beta/MAIA/bg/"
+echo "Moving output files to ${OUTPUT_DIR}"
+mv output_* ${OUTPUT_DIR}
+echo "Working directory contents:"
+ls
+echo "Output directory contents:"
+ls ${OUTPUT_DIR}
+
+echo "Digitizing..."
+export MUPLUS="/global/cfs/cdirs/atlas/spgriso/MuonCollider/data/bib/10TeV-2024/MAIA/sim_mp"
+export MUMINUS="/global/cfs/cdirs/atlas/spgriso/MuonCollider/data/bib/10TeV-2024/MAIA/sim_mm"
+echo "MUPLUS set to"
+echo ${MUPLUS}
+echo "MUMINUS set to"
+echo ${MUMINUS}
+
+SIM_FILE="${OUTPUT_DIR}output_sim_eval.slcio"
+GEOMETRY_FILE="mjolnir/data/geometries/detector-simulation/geometries/MAIA_v0/MAIA_v0.xml"
+echo "Digitizing with geometry file ${GEOMETRY_FILE}"
+
+k4run mjolnir/code/TrkHitsStudiesWorkspace/configs/digi_steer_MAIAv0.py --LcioEvent.Files ${SIM_FILE} --DD4hepXMLFile ${GEOMETRY_FILE} --OverlayFullPathToMuPlus ${MUPLUS} --OverlayFullPathToMuMinus ${MUMINUS} --OverlayFullNumberBackground 883 --doOverlayFull
+
+echo "Digitization complete"
+echo "Working directory contents:"
+ls
+echo "Renaming output as evaluation output"
+mv output_digi.slcio ${OUTPUT_DIR}output_digi_eval.slcio
+mv output_digi_light.slcio ${OUTPUT_DIR}output_digi_light_eval.slcio
+echo "Working directory contents:"
+ls
+echo "Output directory contents:"
+ls ${OUTPUT_DIR}

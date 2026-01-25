@@ -1,0 +1,54 @@
+#!/bin/bash
+
+WORKING_DIR="/global/cfs/projectdirs/atlas/jashley/mjolnir"
+cd ${WORKING_DIR}
+echo "Changed directory to ${WORKING_DIR}"
+
+echo "Initiating TTree creation"
+TTREE_CREATION_LOG="ttree.log"
+CREATE_TTREE_PYTHON="code/beta/create-input/createTTree.py"
+TRAINING_TTREE="data/beta/Hits_TTree_output_digi_light_training.root"
+EVAL_TTREE="data/beta/Hits_TTree_output_digi_light_eval.root"
+
+SIGNAL_TRAINING_INFILE="data/beta/MAIA/signal/output_digi_light_training.slcio"
+echo "Creating TTree from ${SIGNAL_TRAINING_INFILE}."
+python ${CREATE_TTREE_PYTHON} -i ${SIGNAL_TRAINING_INFILE} | tee ${TTREE_CREATION_LOG}
+mv ${TRAINING_TTREE} data/beta/MAIA/signal/
+
+SIGNAL_EVAL_INFILE="data/beta/MAIA/signal/output_digi_light_eval.slcio"
+echo "Creating TTree from ${SIGNAL_EVAL_INFILE}."
+python ${CREATE_TTREE_PYTHON} -i ${SIGNAL_EVAL_INFILE} | tee -a ${TTREE_CREATION_LOG}
+mv ${EVAL_TTREE} data/beta/MAIA/signal/
+
+BACKGROUND_TRAINING_INFILE="data/beta/MAIA/bg/output_digi_light_training.slcio"
+echo "Creating TTree from ${BACKGROUND_TRAINING_INFILE}."
+python ${CREATE_TTREE_PYTHON} -i ${BACKGROUND_TRAINING_INFILE} | tee -a ${TTREE_CREATION_LOG}
+mv ${TRAINING_TTREE} data/beta/MAIA/bg/
+
+BACKGROUND_EVAL_INFILE="data/beta/MAIA/bg/output_digi_light_eval.slcio"
+echo "Creating TTree from ${BACKGROUND_EVAL_INFILE}."
+python ${CREATE_TTREE_PYTHON} -i ${BACKGROUND_EVAL_INFILE} | tee -a ${TTREE_CREATION_LOG}
+mv ${EVAL_TTREE} data/beta/MAIA/bg/
+
+ls data/beta/MAIA/signal | tee -a ${TTREE_CREATION_LOG}
+ls data/beta/MAIA/bg | tee -a ${TTREE_CREATION_LOG}
+echo "=== TTree creation completed, log saved to ${TTREE_CREATION_LOG} ==="
+
+BDT_DIR="/global/cfs/projectdirs/atlas/jashley/mjolnir/code/beta"
+cd ${BDT_DIR}
+echo "Changed directory to ${BDT_DIR}"
+
+echo "Initiating BDT training"
+TRAINING_LOG="training.log"
+python run_tmva_bdt.py | tee ${TRAINING_LOG}
+date >> ${TRAINING_LOG}
+echo "=== Training completed, log saved to ${TRAINING_LOG} ==="
+
+echo "Initiating BDT evaluation"
+EVALUATION_LOG="evaluation.log"
+python evaluate_tmva_bdt.py | tee ${EVALUATION_LOG}
+date >> ${TRAINING_LOG}
+echo "=== Evaluation completed, log saved to ${EVALUATION_LOG} ==="
+
+echo "Changing directory back to"
+cd -

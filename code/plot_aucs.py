@@ -75,8 +75,8 @@ def apply_filters(rows, filters):
             filtered_rows.append(row)
     return filtered_rows
 
+# Sort numeric values naturally, strings lexicographically
 def sort_key(x):
-    # numeric sorts naturally; strings sorted lexicographically
     return (0, x) if isinstance(x, (int, float)) else (1, str(x))
 
 def group_rows(rows, group_key):
@@ -90,9 +90,10 @@ def group_rows(rows, group_key):
         grouped[group_value].append(row)
     return grouped
 
-def plot_series(rows, x_key, y_key, group_key, title, out_png, x_label=None):
+def plot_series(rows, x_key, y_key, group_key, title, out_png, x_label=None, show_average=True):
     grouped = group_rows(rows, group_key)
     fig, ax = plt.subplots()
+    avg_bin = {}
     for group_value in sorted(grouped.keys(), key=sort_key):
         points = grouped[group_value]
         xs     = []
@@ -106,6 +107,10 @@ def plot_series(rows, x_key, y_key, group_key, title, out_png, x_label=None):
                 continue
             xs.append(x)
             ys.append(y)
+            if show_average:
+                if x not in avg_bin:
+                    avg_bin[x] = []
+                avg_bin[x].append(y)
 
         # sort points by x
         combined = list(zip(xs, ys))
@@ -117,11 +122,31 @@ def plot_series(rows, x_key, y_key, group_key, title, out_png, x_label=None):
             ys_sorted.append(y)
         ax.plot(xs_sorted, ys_sorted, "-", label=str(group_value))
 
+    # Plot averages
+    if show_average and avg_bin:
+        x_vals = sorted(avg_bin.keys(), key=sort_key)
+        avg_vals = []
+        for x in x_vals:
+            ys_for_x = avg_bin[x]
+            y_sum    = 0.0
+            y_count  = 0
+            for y in ys_for_x:
+                y_sum   += y
+                y_count += 1
+            avg_vals.append(y_sum / y_count)
+        avg_x = []
+        avg_y = []
+        for i in range(len(x_vals)):
+            avg_x.append(x_vals[i])
+            avg_y.append(avg_vals[i])
+        ax.plot(avg_x, avg_y, "--", linewidth=2, label="Average")
+
     ax.set_xlabel(x_label if x_label else x_key)
     ax.set_ylabel("ROC AUC")
     ax.set_title(title)
     ax.legend()
 
+    plt.grid()
     plt.savefig(out_png)
 
 def main():
@@ -145,11 +170,7 @@ def main():
 
     # Nice default group labels for thickness
     group_label = args.group
-    if args.group == "thickness_mu":
-        # Set legend to "50 microns" etc by overriding label formatting
-        pass
 
-    # If grouping by thickness_mu, label it nicely
     if args.group == "thickness_mu":
         for r in rows:
             if r.get("thickness_mu") is not None:
@@ -161,7 +182,7 @@ def main():
             args.x,
             "train_auc",
             args.group,
-            f"ROC AUCs for Training Data vs {args.x}",
+            "ROC AUCs for Training Data",
             f"roc-auc-training-vs-{args.x}.png",
             args.xlabel
         )
@@ -172,7 +193,7 @@ def main():
             args.x,
             "eval_auc",
             args.group,
-            f"ROC AUCs for Evaluation Data vs {args.x}",
+            "ROC AUCs for Evaluation Data",
             f"roc-auc-eval-vs-{args.x}.png",
             args.xlabel
         )

@@ -46,13 +46,13 @@ reader.BookMVA("BDT", "dataset/weights/TMVAClassification_BDT.weights.xml")
 
 # --- INPUT --- #
 # Training files
-sig_training_file = ROOT.TFile.Open(f"../../data/beta/MAIA/signal/{sensor_thickness}_sig_trng_ttree.root")
-bkg_training_file = ROOT.TFile.Open(f"../../data/beta/MAIA/bg/{sensor_thickness}_bkg_trng_ttree.root")
+sig_training_file = ROOT.TFile.Open(f"../data/MAIA/signal/{sensor_thickness}_sig_trng_ttree.root")
+bkg_training_file = ROOT.TFile.Open(f"../data/MAIA/bg/{sensor_thickness}_bkg_trng_ttree.root")
 sig_training_tree = sig_training_file.Get("HitTree")
 bkg_training_tree = bkg_training_file.Get("HitTree")
 # Evaluation files
-sig_eval_file = ROOT.TFile.Open(f"../../data/beta/MAIA/signal/{sensor_thickness}_sig_eval_ttree.root")
-bkg_eval_file = ROOT.TFile.Open(f"../../data/beta/MAIA/bg/{sensor_thickness}_bkg_eval_ttree.root")
+sig_eval_file = ROOT.TFile.Open(f"../data/MAIA/signal/{sensor_thickness}_sig_eval_ttree.root")
+bkg_eval_file = ROOT.TFile.Open(f"../data/MAIA/bg/{sensor_thickness}_bkg_eval_ttree.root")
 sig_eval_tree = sig_eval_file.Get("HitTree")
 bkg_eval_tree = bkg_eval_file.Get("HitTree")
 

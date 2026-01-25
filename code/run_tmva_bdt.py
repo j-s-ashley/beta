@@ -203,8 +203,8 @@ for v_id, _ in variables.items():
     dataloader.AddVariable(v_id, "F")
 
 # Load signal and background files
-sig_file = ROOT.TFile(f"/global/cfs/projectdirs/atlas/jashley/mjolnir/data/beta/MAIA/signal/{sensor_thickness}_sig_trng_ttree.root")
-bkg_file = ROOT.TFile(f"/global/cfs/projectdirs/atlas/jashley/mjolnir/data/beta/MAIA/bg/{sensor_thickness}_bkg_trng_ttree.root")
+sig_file = ROOT.TFile(f"/global/cfs/cdirs/atlas/jashley/mjolnir/beta/data/MAIA/signal/{sensor_thickness}_sig_trng_ttree.root")
+bkg_file = ROOT.TFile(f"/global/cfs/cdirs/atlas/jashley/mjolnir/beta/data/MAIA/bg/{sensor_thickness}_bkg_trng_ttree.root")
 sig_tree = sig_file.Get("HitTree")
 bkg_tree = bkg_file.Get("HitTree")
 

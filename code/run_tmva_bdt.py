@@ -7,8 +7,8 @@ from array import array
 
 train_fraction = .5
 n_trees        = 800
-clust_per_tree = "9%"
-max_depth      = 3
+clust_per_tree = "3%"
+max_depth      = 4
 beta           = .5
 
 # Accept sensor thickness CLI input
@@ -203,8 +203,8 @@ for v_id, _ in variables.items():
     dataloader.AddVariable(v_id, "F")
 
 # Load signal and background files
-sig_file = ROOT.TFile(f"/global/cfs/cdirs/atlas/jashley/mjolnir/beta/data/MAIA/signal/{sensor_thickness}_sig_trng_ttree.root")
-bkg_file = ROOT.TFile(f"/global/cfs/cdirs/atlas/jashley/mjolnir/beta/data/MAIA/bg/{sensor_thickness}_bkg_trng_ttree.root")
+sig_file = ROOT.TFile(f"/global/cfs/projectdirs/atlas/jashley/mjolnir/beta/data/MAIA/signal/{sensor_thickness}_sig_trng_ttree.root")
+bkg_file = ROOT.TFile(f"/global/cfs/projectdirs/atlas/jashley/mjolnir/beta/data/MAIA/bg/{sensor_thickness}_bkg_trng_ttree.root")
 sig_tree = sig_file.Get("HitTree")
 bkg_tree = bkg_file.Get("HitTree")
 

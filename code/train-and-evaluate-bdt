@@ -8,7 +8,7 @@ SENSOR_THICKNESSES=(
 	400
 )
 
-WORKING_DIR="/global/cfs/cdirs/atlas/jashley/mjolnir/beta/code"
+WORKING_DIR="/global/cfs/projectdirs/atlas/jashley/mjolnir/beta/code"
 cd ${WORKING_DIR}
 echo "Changed directory to ${WORKING_DIR}"
 

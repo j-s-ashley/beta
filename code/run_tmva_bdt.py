@@ -8,7 +8,7 @@ from array import array
 train_fraction = .5
 n_trees        = 800
 clust_per_tree = "3%"
-max_depth      = 4
+max_depth      = 12
 beta           = .5
 
 # Accept sensor thickness CLI input

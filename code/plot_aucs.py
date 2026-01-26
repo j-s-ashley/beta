@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 """
 USAGE EXAMPLES
 python plot_aucs.py --x n_trees --xlabel "Number of trees in TMVA forest"
-python plot_aucs.py --x min_node_size --xlabel "Min node size (%)"
-python plot_aucs.py --x max_depth --xlabel "Max depth"
+python plot_aucs.py --x max_depth \
+  --filter n_trees=800 --filter min_node_size=3 --filter beta=_5 --filter split=50_50 \
+  --xlabel "Max tree depth (# of nodes)"
 python plot_aucs.py --x min_node_size \
   --filter n_trees=800 --filter max_depth=3 --filter beta=_5 --filter split=50_50 \
   --xlabel "Min node size (%)"

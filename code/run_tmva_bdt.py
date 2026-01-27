@@ -8,7 +8,7 @@ from array import array
 train_fraction = .5
 n_trees        = 800
 clust_per_tree = "3%"
-max_depth      = 12
+max_depth      = 8
 beta           = .5
 
 # Accept sensor thickness CLI input
@@ -86,7 +86,7 @@ variables = {
         ),
         "Incident_Angle": Variable(
             label="Incident angle [radians]",
-            ymax=0.09,
+            ymax=0.11,
             xmin=0,
             xmax=3,
             legend="center",
@@ -134,11 +134,11 @@ variables = {
         ),
         "Cluster_z": Variable(
             label="Cluster z position [cm]",
-            ymax=0.55,
+            ymax=1.1,
             xmin=-80,
             xmax=80,
             legend="right",
-            yscale="linear",
+            yscale="log",
         ),
         "Cluster_RMS_x": Variable(
             label="Cluster RMS in x [cm^{2}]",

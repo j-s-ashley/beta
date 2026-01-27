@@ -4,7 +4,9 @@ import matplotlib.pyplot as plt
 
 """
 USAGE EXAMPLES
-python plot_aucs.py --x n_trees --xlabel "Number of trees in TMVA forest"
+python plot_aucs.py --x n_trees \
+  --filter min_node_size=3 --filter max_depth=8 --filter beta=_5 --filter split=50_50\
+  --xlabel "Number of trees in TMVA forest"
 python plot_aucs.py --x max_depth \
   --filter n_trees=800 --filter min_node_size=3 --filter beta=_5 --filter split=50_50 \
   --xlabel "Max tree depth (# of nodes)"

@@ -200,14 +200,16 @@ def run_tmva_kfold(thickness):
         "nTrain_Signal=0:nTrain_Background=0:"
         "nTest_Signal=0:nTest_Background=0:!V"
     )
+    dataloader.AddSpectator("fold", "I")
 
     # Cross validation controller
     cv = TMVA.CrossValidation("cv_job", dataloader, output_file, f"!V:NumFolds={k_folds}")
     # Allow comparison across hyperparameter tuning outputs
     # Determines fold split by modulus of TTree entry index
     # with number of folds (k_folds), cycling from 0 to k-1
+    # See index-ttree.py for process and further info.
     # NOTE: this will not hold if TTrees are altered later!
-    cv.SetSplitExpr("Entry$ % int([NumFolds])")
+    cv.SetSplitExpr("[fold]")
 
     # Book method(s) as with factory
     bookmethod_opts = (

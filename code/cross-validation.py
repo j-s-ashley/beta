@@ -186,8 +186,8 @@ def run_tmva_kfold(thickness):
         dataloader.AddVariable(v_id, "F")
 
     # Load signal and background files
-    sig_file = ROOT.TFile(f"/global/cfs/projectdirs/atlas/jashley/mjolnir/beta/data/MAIA/signal/{thickness}_sig_trng_ttree_k{k_fold}.root")
-    bkg_file = ROOT.TFile(f"/global/cfs/projectdirs/atlas/jashley/mjolnir/beta/data/MAIA/bg/{thickness}_bkg_trng_ttree_k{k_fold}.root")
+    sig_file = ROOT.TFile(f"/global/cfs/projectdirs/atlas/jashley/mjolnir/beta/data/MAIA/signal/{thickness}_sig_trng_ttree_k{k_folds}.root")
+    bkg_file = ROOT.TFile(f"/global/cfs/projectdirs/atlas/jashley/mjolnir/beta/data/MAIA/bg/{thickness}_bkg_trng_ttree_k{k_folds}.root")
     sig_tree = sig_file.Get("HitTree")
     bkg_tree = bkg_file.Get("HitTree")
 

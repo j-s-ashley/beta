@@ -1,17 +1,52 @@
+import os
+import csv
 import ROOT
 from ROOT import TMVA
 from dataclasses import dataclass
 
 """
-Train/test split is managed by the number of folds (k), with
+Train/test split is managed by the number of folds (k_folds), with
 training = k-1 folds of clusters
 test = 1 fold of clusters
 """
+
+# Parameters
 k_folds        = 5
 n_trees        = 800
-clust_per_tree = "3%"
+min_node_size  = "3%"
 max_depth      = 8
 beta           = .5
+
+# I/O
+results_csv_name = "cv_aucs.csv"
+results_csv_path = "/global/cfs/projectdirs/atlas/jashley/mjolnir/beta/code/" + results_csv_name 
+
+# C++ map to vector helper
+ROOT.gInterpreter.Declare(r"""
+#include <vector>
+#include <utility>
+#include "TMVA/CrossValidation.h"
+
+// Return (fold, auc) pairs as doubles (avoids Float_t marshaling issues)
+std::vector<std::pair<unsigned int, double>>
+TMVA_GetFoldAUCs(const TMVA::CrossValidationResult& r) {
+    std::vector<std::pair<unsigned int, double>> out;
+    const auto m = r.GetROCValues();  // std::map<UInt_t, Float_t>
+    out.reserve(m.size());
+    for (const auto& kv : m) {
+        out.emplace_back(kv.first, static_cast<double>(kv.second));
+    }
+    return out;
+}
+
+double TMVA_GetROCAverageD(const TMVA::CrossValidationResult& r) {
+    return static_cast<double>(r.GetROCAverage());
+}
+
+double TMVA_GetROCStdDevD(const TMVA::CrossValidationResult& r) {
+    return static_cast<double>(r.GetROCStandardDeviation());
+}
+""")
 
 # Pixel information helper function
 def make_pixelhit_vars(prefix, label, *, n=9, ymax, xmin, xmax, legend="right", yscale="log"):
@@ -27,6 +62,55 @@ def make_pixelhit_vars(prefix, label, *, n=9, ymax, xmin, xmax, legend="right", 
         )
         for i in range(n)
     }
+
+def extract_aucs(cv_results):
+    """
+    Takes cv.GetResults() object.
+    Returns a list of dictionary entries:
+        [{"fold": 0, "auc": 0.918}, ...]
+    as well as the average and standard 
+    deviation results.
+    """
+
+    # Error checking
+    if len(cv_results) <= 0:
+        raise RuntimeError(f"Cross validation returned {len(cv_results)} results.")
+    
+    # Process first booked method
+    r0       = cv_results[0] # focus on first booked method
+    vec      = ROOT.TMVA_GetFoldAUCs(r0) # use C++ helper (vector<pair<uint,double>>)
+    rows0    = [{"fold": int(pair.first), "auc": float(pair.second)} for pair in vec]
+    rows0.sort(key=lambda d: d["fold"]) # sort rows by fold index
+    auc_avg0 = float(ROOT.TMVA_GetROCAverageD(r0))
+    auc_std0 = float(ROOT.TMVA_GetROCStdDevD(r0))
+    
+    # TODO: Expand for future use of multiple methods
+    return rows0, auc_avg0, auc_std0
+
+def aucs_to_csv(csv_path, *, thickness, fold_rows, auc_avg, auc_std):
+    fields = [
+        "thickness", "k", "n_trees", "min_node_size", "max_depth",
+        "beta", "fold", "auc", "auc_avg", "auc_std"
+    ]
+    # Check for existing .csv, write if none
+    file_exists = os.path.exists(csv_path)
+    with open(csv_path, "a", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=fields)
+        if not file_exists:
+            w.writeheader()
+        for r in fold_rows:
+            w.writerow({
+                "thickness": thickness,
+                "k": k_folds,
+                "n_trees": n_trees,
+                "min_node_size": min_node_size,
+                "max_depth": max_depth,
+                "beta": beta,
+                "fold": r["fold"],
+                "auc": r["auc"],
+                "auc_avg": auc_avg,
+                "auc_std": auc_std
+            })
 
 # Create variable class
 @dataclass(frozen=True)
@@ -201,20 +285,23 @@ def run_tmva_kfold(thickness):
         "nTest_Signal=0:nTest_Background=0:!V"
     )
     dataloader.AddSpectator("fold", "I")
+    
+    cv_opts = (
+        f"!V:"
+        f"AnalysisType=Classification:"
+        f"ROC:"                          # enable ROC filling into CrossValidationResult
+        f"NumFolds={k_folds}:"
+        f"SplitType=Deterministic:"
+        f"SplitExpr=[fold]"              # allow comparison across hyperparameter tuning outputs
+    )
 
     # Cross validation controller
-    cv = TMVA.CrossValidation("cv_job", dataloader, output_file, f"!V:NumFolds={k_folds}")
-    # Allow comparison across hyperparameter tuning outputs
-    # Determines fold split by modulus of TTree entry index
-    # with number of folds (k_folds), cycling from 0 to k-1
-    # See index-ttree.py for process and further info.
-    # NOTE: this will not hold if TTrees are altered later!
-    cv.SetSplitExpr("[fold]")
+    cv = TMVA.CrossValidation("cv_job", dataloader, output_file, cv_opts)
 
     # Book method(s) as with factory
     bookmethod_opts = (
         f"!H:!V:NTrees={n_trees}:MaxDepth={max_depth}:"
-        f"MinNodeSize={clust_per_tree}:BoostType=AdaBoost:"
+        f"MinNodeSize={min_node_size}:BoostType=AdaBoost:"
         f"AdaBoostBeta={beta}:SeparationType=GiniIndex:nCuts=20"
     )
 
@@ -226,18 +313,34 @@ def run_tmva_kfold(thickness):
     # Train, test, and evaluate booked method(s)
     cv.Evaluate()
 
-    # Fold-by-fold results
-    results = cv.GetResults()  # vector<CrossValidationResult>
-    print(f"Cross validation completed. Results saved to {out_file_name}.")
+    # Get and store fold-by-fold results
+    results = cv.GetResults()
+    print("Sanity check print")
+    results[0].Print()
+
+    fold_rows, auc_avg, auc_std = extract_aucs(results)
+    aucs_to_csv(
+        results_csv_path,
+        thickness=thickness,
+        fold_rows=fold_rows,
+        auc_avg=auc_avg,
+        auc_std=auc_std,
+    )
+
+    print(f"Cross validation completed. Results saved to {out_file_name} and written to {results_csv_name}.")
     print("------------------------")
     print(f"-------{thickness} micron-------")
     print("------------------------")
     print("CROSS VALIDATION SUMMARY")
-    print(results)
+    print("AUCs:", fold_rows)
+    print("avg/std:", auc_avg, auc_std)
+    print("Split expr:", cv.GetSplitExpr())
+    print("Num folds :", cv.GetNumFolds())
 
     output_file.Close()
 
-sensor_thicknesses = [50, 75, 100, 200, 400]
+#sensor_thicknesses = [50, 75, 100, 200, 400]
+sensor_thicknesses = [400]
 
 for t in sensor_thicknesses:
     run_tmva_kfold(t)

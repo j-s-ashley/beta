@@ -325,7 +325,7 @@ def run_tmva_kfold(thickness):
     output_file.Close()
 
 #sensor_thicknesses = [50, 75, 100, 200, 400]
-sensor_thicknesses = [400]
+sensor_thicknesses = [50]
 
 for t in sensor_thicknesses:
     run_tmva_kfold(t)

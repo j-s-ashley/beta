@@ -21,33 +21,6 @@ beta           = .5
 results_csv_name = "cv_aucs.csv"
 results_csv_path = "/global/cfs/projectdirs/atlas/jashley/mjolnir/beta/code/" + results_csv_name 
 
-# C++ map to vector helper
-ROOT.gInterpreter.Declare(r"""
-#include <vector>
-#include <utility>
-#include "TMVA/CrossValidation.h"
-
-// Return (fold, auc) pairs as doubles (avoids Float_t marshaling issues)
-std::vector<std::pair<unsigned int, double>>
-TMVA_GetFoldAUCs(const TMVA::CrossValidationResult& r) {
-    std::vector<std::pair<unsigned int, double>> out;
-    const auto m = r.GetROCValues();  // std::map<UInt_t, Float_t>
-    out.reserve(m.size());
-    for (const auto& kv : m) {
-        out.emplace_back(kv.first, static_cast<double>(kv.second));
-    }
-    return out;
-}
-
-double TMVA_GetROCAverageD(const TMVA::CrossValidationResult& r) {
-    return static_cast<double>(r.GetROCAverage());
-}
-
-double TMVA_GetROCStdDevD(const TMVA::CrossValidationResult& r) {
-    return static_cast<double>(r.GetROCStandardDeviation());
-}
-""")
-
 # Pixel information helper function
 def make_pixelhit_vars(prefix, label, *, n=9, ymax, xmin, xmax, legend="right", yscale="log"):
     # Sorry, Tova. Dictionary comprehension just looks so much better here.
@@ -78,11 +51,23 @@ def extract_aucs(cv_results):
     
     # Process first booked method
     r0       = cv_results[0] # focus on first booked method
-    vec      = ROOT.TMVA_GetFoldAUCs(r0) # use C++ helper (vector<pair<uint,double>>)
-    rows0    = [{"fold": int(pair.first), "auc": float(pair.second)} for pair in vec]
+    roc_map0 = r0.GetROCValues() # std::map<UInt_t, Float_t> 
+    
+    # Iterate over ROC map
+    rows0 = []
+    i     = roc_map0.begin()
+    end   = roc_map0.end()
+    while i != end:
+        pair = i.__deref__() # get fold/AUC pairs from map
+        rows0.append({
+            "fold": int(pair.first),
+            "auc": float(pair.second),
+        })
+        i.__preinc__() # preincrement iterator (++i)
+    
     rows0.sort(key=lambda d: d["fold"]) # sort rows by fold index
-    auc_avg0 = float(ROOT.TMVA_GetROCAverageD(r0))
-    auc_std0 = float(ROOT.TMVA_GetROCStdDevD(r0))
+    auc_avg0 = float(r0.GetROCAverage())
+    auc_std0 = float(r0.GetROCStandardDeviation())
     
     # TODO: Expand for future use of multiple methods
     return rows0, auc_avg0, auc_std0

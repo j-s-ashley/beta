@@ -7,7 +7,7 @@ from array import array
 
 train_fraction = .5
 n_trees        = 800
-clust_per_tree = "3%"
+min_node_size  = "3%"
 max_depth      = 8
 beta           = .5
 
@@ -229,7 +229,7 @@ dataloader.PrepareTrainingAndTestTree(ROOT.TCut(""), ROOT.TCut(""), dataloader_o
 
 bookmethod_opts = (
     f"!H:!V:NTrees={n_trees}:MaxDepth={max_depth}:"
-    f"MinNodeSize={clust_per_tree}:BoostType=AdaBoost:"
+    f"MinNodeSize={min_node_size}:BoostType=AdaBoost:"
     f"AdaBoostBeta={beta}:SeparationType=GiniIndex:nCuts=20"
 )
 

@@ -12,10 +12,10 @@ test = 1 fold of clusters
 
 # Parameters
 k_folds        = 5
-n_trees        = 800
-min_node_size  = "3%"
-max_depth      = 8
-beta           = .5
+n_trees        = [200, 400, 600, 800, 1000, 1200, 1400]
+min_node_size  = ["0.5%", "1.0%", "1.5%", "2.0%", "2.5%", "3%", "3.5%"]
+max_depth      = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+beta           = [.1, .2, .3, .4, .5, .6, .7, .8, .9]
 
 # I/O
 results_csv_name = "cv_aucs.csv"
@@ -72,7 +72,7 @@ def extract_aucs(cv_results):
     # TODO: Expand for future use of multiple methods
     return rows0, auc_avg0, auc_std0
 
-def aucs_to_csv(csv_path, *, thickness, fold_rows, auc_avg, auc_std):
+def aucs_to_csv(csv_path, *, thickness, node_size, depth, ntrees, b, fold_rows, auc_avg, auc_std):
     fields = [
         "thickness", "k", "n_trees", "min_node_size", "max_depth",
         "beta", "fold", "auc", "auc_avg", "auc_std"
@@ -87,10 +87,10 @@ def aucs_to_csv(csv_path, *, thickness, fold_rows, auc_avg, auc_std):
             w.writerow({
                 "thickness": thickness,
                 "k": k_folds,
-                "n_trees": n_trees,
-                "min_node_size": min_node_size,
-                "max_depth": max_depth,
-                "beta": beta,
+                "n_trees": ntrees,
+                "min_node_size": node_size,
+                "max_depth": depth,
+                "beta": b,
                 "fold": r["fold"],
                 "auc": r["auc"],
                 "auc_avg": auc_avg,
@@ -243,7 +243,7 @@ variables |= make_pixelhit_vars(
 # --- K-FOLD CROSS VALIDATION --- #
 out_file_suffix = "_TMVACV.root"
 
-def run_tmva_kfold(thickness):
+def run_tmva_kfold(thickness, node_size, depth, ntrees, b):
     TMVA.Tools.Instance()
     # Create output file
     out_file_name = str(thickness) + out_file_suffix
@@ -285,9 +285,9 @@ def run_tmva_kfold(thickness):
 
     # Book method(s) as with factory
     bookmethod_opts = (
-        f"!H:!V:NTrees={n_trees}:MaxDepth={max_depth}:"
-        f"MinNodeSize={min_node_size}:BoostType=AdaBoost:"
-        f"AdaBoostBeta={beta}:SeparationType=GiniIndex:nCuts=20"
+        f"!H:!V:NTrees={ntrees}:MaxDepth={depth}:"
+        f"MinNodeSize={node_size}:BoostType=AdaBoost:"
+        f"AdaBoostBeta={b}:SeparationType=GiniIndex:nCuts=20"
     )
 
     cv.BookMethod(
@@ -307,6 +307,10 @@ def run_tmva_kfold(thickness):
     aucs_to_csv(
         results_csv_path,
         thickness=thickness,
+        node_size=node_size,
+        depth=depth,
+        ntrees=ntrees,
+        b=b,
         fold_rows=fold_rows,
         auc_avg=auc_avg,
         auc_std=auc_std,
@@ -328,4 +332,8 @@ def run_tmva_kfold(thickness):
 sensor_thicknesses = [50]
 
 for t in sensor_thicknesses:
-    run_tmva_kfold(t)
+    for size in min_node_size:
+        for depth in max_depth:
+            for n in n_trees:
+                for b in beta:
+                    run_tmva_kfold(t, size, depth, n, b)

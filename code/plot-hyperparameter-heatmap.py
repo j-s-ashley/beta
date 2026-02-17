@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv("cv_aucs_burn.csv")
+df = pd.read_csv("cv_aucs.csv")
 
 def plot(x_header, y_header, x_lab, y_lab):
     grid = df.pivot_table(
@@ -25,3 +25,8 @@ def plot(x_header, y_header, x_lab, y_lab):
     plt.savefig(f"{x_lab}-vs-{y_lab}-aucs.pdf")
 
 plot("min_node_size", "max_depth", "MinNodeSize", "MaxDepth")
+plot("min_node_size", "beta", "MinNodeSize", "Beta")
+plot("min_node_size", "n_trees", "MinNodeSize", "NTrees")
+plot("max_depth", "beta", "MaxDepth", "Beta")
+plot("max_depth", "n_trees", "MaxDepth", "NTrees")
+plot("n_trees", "beta", "NTrees", "Beta")

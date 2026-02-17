@@ -10,10 +10,10 @@ Method         : CrossValidation::BDT
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.30/06       [400902]
 Creator        : jashley
-Date           : Mon Feb  9 04:36:58 2026
+Date           : Mon Feb 16 12:35:35 2026
 Host           : Linux runner-z8jooa6tn-project-190437-concurrent-0-p18ptnml 6.6.13-200.fc39.x86_64 #1 SMP PREEMPT_DYNAMIC Sat Jan 20 18:03:28 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /global/cfs/cdirs/atlas/jashley/mjolnir/beta/code
-Training events: 24529
+Training events: 17483
 Analysis type  : [Classification]
 
 
@@ -38,38 +38,38 @@ IgnoreNegWeightsInTraining: "False" [Events with negative weights are ignored in
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
 NVar 32
-Cluster_ArrivalTime           Cluster_ArrivalTime           Cluster_ArrivalTime           Cluster_ArrivalTime                                             'F'    [-0.846125662327,3.59622740746]
-Cluster_EnergyDeposited       Cluster_EnergyDeposited       Cluster_EnergyDeposited       Cluster_EnergyDeposited                                         'F'    [5.27931933902e-06,0.0274781603366]
-Incident_Angle                Incident_Angle                Incident_Angle                Incident_Angle                                                  'F'    [0.432747334242,2.70908260345]
-Cluster_Size_x                Cluster_Size_x                Cluster_Size_x                Cluster_Size_x                                                  'F'    [1,520]
-Cluster_Size_y                Cluster_Size_y                Cluster_Size_y                Cluster_Size_y                                                  'F'    [1,3759]
-Cluster_Size_tot              Cluster_Size_tot              Cluster_Size_tot              Cluster_Size_tot                                                'F'    [1,11779]
-Cluster_x                     Cluster_x                     Cluster_x                     Cluster_x                                                       'F'    [-31.212518692,31.2101268768]
-Cluster_y                     Cluster_y                     Cluster_y                     Cluster_y                                                       'F'    [-31.2173023224,31.2173023224]
-Cluster_z                     Cluster_z                     Cluster_z                     Cluster_z                                                       'F'    [-65.7687454224,65.7249984741]
-Cluster_RMS_x                 Cluster_RMS_x                 Cluster_RMS_x                 Cluster_RMS_x                                                   'F'    [0.172564819455,83948.0703125]
-Cluster_RMS_y                 Cluster_RMS_y                 Cluster_RMS_y                 Cluster_RMS_y                                                   'F'    [0.329795062542,1670302.25]
-Cluster_Skew_x                Cluster_Skew_x                Cluster_Skew_x                Cluster_Skew_x                                                  'F'    [-2.40092039108,1.7580780983]
-Cluster_Skew_y                Cluster_Skew_y                Cluster_Skew_y                Cluster_Skew_y                                                  'F'    [-2.09133267403,1.8673466444]
-Cluster_AspectRatio           Cluster_AspectRatio           Cluster_AspectRatio           Cluster_AspectRatio                                             'F'    [0,17610.7773438]
-PixelHits_EnergyDeposited_0   PixelHits_EnergyDeposited_0   PixelHits_EnergyDeposited_0   PixelHits_EnergyDeposited_0                                     'F'    [627,197932]
-PixelHits_EnergyDeposited_1   PixelHits_EnergyDeposited_1   PixelHits_EnergyDeposited_1   PixelHits_EnergyDeposited_1                                     'F'    [0,131221]
-PixelHits_EnergyDeposited_2   PixelHits_EnergyDeposited_2   PixelHits_EnergyDeposited_2   PixelHits_EnergyDeposited_2                                     'F'    [0,131221]
-PixelHits_EnergyDeposited_3   PixelHits_EnergyDeposited_3   PixelHits_EnergyDeposited_3   PixelHits_EnergyDeposited_3                                     'F'    [0,131221]
-PixelHits_EnergyDeposited_4   PixelHits_EnergyDeposited_4   PixelHits_EnergyDeposited_4   PixelHits_EnergyDeposited_4                                     'F'    [0,86994.5]
-PixelHits_EnergyDeposited_5   PixelHits_EnergyDeposited_5   PixelHits_EnergyDeposited_5   PixelHits_EnergyDeposited_5                                     'F'    [0,86994.5]
-PixelHits_EnergyDeposited_6   PixelHits_EnergyDeposited_6   PixelHits_EnergyDeposited_6   PixelHits_EnergyDeposited_6                                     'F'    [0,86994.5]
-PixelHits_EnergyDeposited_7   PixelHits_EnergyDeposited_7   PixelHits_EnergyDeposited_7   PixelHits_EnergyDeposited_7                                     'F'    [0,86994.5]
-PixelHits_EnergyDeposited_8   PixelHits_EnergyDeposited_8   PixelHits_EnergyDeposited_8   PixelHits_EnergyDeposited_8                                     'F'    [0,57674]
-PixelHits_ArrivalTime_0       PixelHits_ArrivalTime_0       PixelHits_ArrivalTime_0       PixelHits_ArrivalTime_0                                         'F'    [-1.7618380785,4.73132276535]
-PixelHits_ArrivalTime_1       PixelHits_ArrivalTime_1       PixelHits_ArrivalTime_1       PixelHits_ArrivalTime_1                                         'F'    [-1.59928655624,4.81518650055]
-PixelHits_ArrivalTime_2       PixelHits_ArrivalTime_2       PixelHits_ArrivalTime_2       PixelHits_ArrivalTime_2                                         'F'    [-1.60004198551,4.60267353058]
-PixelHits_ArrivalTime_3       PixelHits_ArrivalTime_3       PixelHits_ArrivalTime_3       PixelHits_ArrivalTime_3                                         'F'    [-2.06791973114,4.78989696503]
-PixelHits_ArrivalTime_4       PixelHits_ArrivalTime_4       PixelHits_ArrivalTime_4       PixelHits_ArrivalTime_4                                         'F'    [-1.71488428116,4.55320453644]
-PixelHits_ArrivalTime_5       PixelHits_ArrivalTime_5       PixelHits_ArrivalTime_5       PixelHits_ArrivalTime_5                                         'F'    [-1.76906681061,4.65117931366]
-PixelHits_ArrivalTime_6       PixelHits_ArrivalTime_6       PixelHits_ArrivalTime_6       PixelHits_ArrivalTime_6                                         'F'    [-1.71653962135,4.89141845703]
-PixelHits_ArrivalTime_7       PixelHits_ArrivalTime_7       PixelHits_ArrivalTime_7       PixelHits_ArrivalTime_7                                         'F'    [-1.56619298458,4.85560846329]
-PixelHits_ArrivalTime_8       PixelHits_ArrivalTime_8       PixelHits_ArrivalTime_8       PixelHits_ArrivalTime_8                                         'F'    [-1.74203395844,4.99193096161]
+Cluster_ArrivalTime           Cluster_ArrivalTime           Cluster_ArrivalTime           Cluster_ArrivalTime                                             'F'    [-0.449798971415,0.44998139143]
+Cluster_EnergyDeposited       Cluster_EnergyDeposited       Cluster_EnergyDeposited       Cluster_EnergyDeposited                                         'F'    [3.68849441656e-06,0.00773312104866]
+Incident_Angle                Incident_Angle                Incident_Angle                Incident_Angle                                                  'F'    [0.434898227453,2.71486949921]
+Cluster_Size_x                Cluster_Size_x                Cluster_Size_x                Cluster_Size_x                                                  'F'    [1,375]
+Cluster_Size_y                Cluster_Size_y                Cluster_Size_y                Cluster_Size_y                                                  'F'    [1,3553]
+Cluster_Size_tot              Cluster_Size_tot              Cluster_Size_tot              Cluster_Size_tot                                                'F'    [1,3326]
+Cluster_x                     Cluster_x                     Cluster_x                     Cluster_x                                                       'F'    [-31.1060085297,31.1044139862]
+Cluster_y                     Cluster_y                     Cluster_y                     Cluster_y                                                       'F'    [-31.1091976166,31.1091976166]
+Cluster_z                     Cluster_z                     Cluster_z                     Cluster_z                                                       'F'    [-66.3625030518,64.9625015259]
+Cluster_RMS_x                 Cluster_RMS_x                 Cluster_RMS_x                 Cluster_RMS_x                                                   'F'    [2.56146577158e-05,84181.8828125]
+Cluster_RMS_y                 Cluster_RMS_y                 Cluster_RMS_y                 Cluster_RMS_y                                                   'F'    [0.108925573528,1001824.25]
+Cluster_Skew_x                Cluster_Skew_x                Cluster_Skew_x                Cluster_Skew_x                                                  'F'    [-1.93091881275,1.88485610485]
+Cluster_Skew_y                Cluster_Skew_y                Cluster_Skew_y                Cluster_Skew_y                                                  'F'    [-1.56349599361,1.70994353294]
+Cluster_AspectRatio           Cluster_AspectRatio           Cluster_AspectRatio           Cluster_AspectRatio                                             'F'    [0,2442953]
+PixelHits_EnergyDeposited_0   PixelHits_EnergyDeposited_0   PixelHits_EnergyDeposited_0   PixelHits_EnergyDeposited_0                                     'F'    [759.5,26208]
+PixelHits_EnergyDeposited_1   PixelHits_EnergyDeposited_1   PixelHits_EnergyDeposited_1   PixelHits_EnergyDeposited_1                                     'F'    [0,26208]
+PixelHits_EnergyDeposited_2   PixelHits_EnergyDeposited_2   PixelHits_EnergyDeposited_2   PixelHits_EnergyDeposited_2                                     'F'    [0,26208]
+PixelHits_EnergyDeposited_3   PixelHits_EnergyDeposited_3   PixelHits_EnergyDeposited_3   PixelHits_EnergyDeposited_3                                     'F'    [0,26208]
+PixelHits_EnergyDeposited_4   PixelHits_EnergyDeposited_4   PixelHits_EnergyDeposited_4   PixelHits_EnergyDeposited_4                                     'F'    [0,26208]
+PixelHits_EnergyDeposited_5   PixelHits_EnergyDeposited_5   PixelHits_EnergyDeposited_5   PixelHits_EnergyDeposited_5                                     'F'    [0,26208]
+PixelHits_EnergyDeposited_6   PixelHits_EnergyDeposited_6   PixelHits_EnergyDeposited_6   PixelHits_EnergyDeposited_6                                     'F'    [0,19958.5]
+PixelHits_EnergyDeposited_7   PixelHits_EnergyDeposited_7   PixelHits_EnergyDeposited_7   PixelHits_EnergyDeposited_7                                     'F'    [0,11575]
+PixelHits_EnergyDeposited_8   PixelHits_EnergyDeposited_8   PixelHits_EnergyDeposited_8   PixelHits_EnergyDeposited_8                                     'F'    [0,8814.5]
+PixelHits_ArrivalTime_0       PixelHits_ArrivalTime_0       PixelHits_ArrivalTime_0       PixelHits_ArrivalTime_0                                         'F'    [-0.352703213692,0.797424197197]
+PixelHits_ArrivalTime_1       PixelHits_ArrivalTime_1       PixelHits_ArrivalTime_1       PixelHits_ArrivalTime_1                                         'F'    [-0.380745053291,0.806654989719]
+PixelHits_ArrivalTime_2       PixelHits_ArrivalTime_2       PixelHits_ArrivalTime_2       PixelHits_ArrivalTime_2                                         'F'    [-0.352843999863,0.818193554878]
+PixelHits_ArrivalTime_3       PixelHits_ArrivalTime_3       PixelHits_ArrivalTime_3       PixelHits_ArrivalTime_3                                         'F'    [-0.354178607464,0.850059747696]
+PixelHits_ArrivalTime_4       PixelHits_ArrivalTime_4       PixelHits_ArrivalTime_4       PixelHits_ArrivalTime_4                                         'F'    [-0.32837921381,0.812524855137]
+PixelHits_ArrivalTime_5       PixelHits_ArrivalTime_5       PixelHits_ArrivalTime_5       PixelHits_ArrivalTime_5                                         'F'    [-0.366690337658,0.766377866268]
+PixelHits_ArrivalTime_6       PixelHits_ArrivalTime_6       PixelHits_ArrivalTime_6       PixelHits_ArrivalTime_6                                         'F'    [-0.344565927982,0.740161120892]
+PixelHits_ArrivalTime_7       PixelHits_ArrivalTime_7       PixelHits_ArrivalTime_7       PixelHits_ArrivalTime_7                                         'F'    [-0.380850195885,0.788814127445]
+PixelHits_ArrivalTime_8       PixelHits_ArrivalTime_8       PixelHits_ArrivalTime_8       PixelHits_ArrivalTime_8                                         'F'    [-0.323289513588,0.715506672859]
 NSpec 1
 fold                          fold                          fold                          I                                                               'F'    [0,4]
 

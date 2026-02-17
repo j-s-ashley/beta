@@ -4,11 +4,11 @@
     <Info name="TMVA Release" value="4.2.1 [262657]"/>
     <Info name="ROOT Release" value="6.30/06 [400902]"/>
     <Info name="Creator" value="jashley"/>
-    <Info name="Date" value="Mon Feb  9 04:36:58 2026"/>
+    <Info name="Date" value="Mon Feb 16 12:35:35 2026"/>
     <Info name="Host" value="Linux runner-z8jooa6tn-project-190437-concurrent-0-p18ptnml 6.6.13-200.fc39.x86_64 #1 SMP PREEMPT_DYNAMIC Sat Jan 20 18:03:28 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux"/>
     <Info name="Dir" value="/global/cfs/cdirs/atlas/jashley/mjolnir/beta/code"/>
-    <Info name="Training events" value="24529"/>
-    <Info name="TrainingTime" value="1.90734863e-06"/>
+    <Info name="Training events" value="17483"/>
+    <Info name="TrainingTime" value="2.14576721e-06"/>
     <Info name="AnalysisType" value="Classification"/>
   </GeneralInfo>
   <Options>
@@ -25,38 +25,38 @@
     <Option name="SplitExpr" modified="Yes">[fold]</Option>
   </Options>
   <Variables NVar="32">
-    <Variable VarIndex="0" Expression="Cluster_ArrivalTime" Label="Cluster_ArrivalTime" Title="Cluster_ArrivalTime" Unit="" Internal="Cluster_ArrivalTime" Type="F" Min="-8.46125662e-01" Max="3.59622741e+00"/>
-    <Variable VarIndex="1" Expression="Cluster_EnergyDeposited" Label="Cluster_EnergyDeposited" Title="Cluster_EnergyDeposited" Unit="" Internal="Cluster_EnergyDeposited" Type="F" Min="5.27931934e-06" Max="2.74781603e-02"/>
-    <Variable VarIndex="2" Expression="Incident_Angle" Label="Incident_Angle" Title="Incident_Angle" Unit="" Internal="Incident_Angle" Type="F" Min="4.32747334e-01" Max="2.70908260e+00"/>
-    <Variable VarIndex="3" Expression="Cluster_Size_x" Label="Cluster_Size_x" Title="Cluster_Size_x" Unit="" Internal="Cluster_Size_x" Type="F" Min="1.00000000e+00" Max="5.20000000e+02"/>
-    <Variable VarIndex="4" Expression="Cluster_Size_y" Label="Cluster_Size_y" Title="Cluster_Size_y" Unit="" Internal="Cluster_Size_y" Type="F" Min="1.00000000e+00" Max="3.75900000e+03"/>
-    <Variable VarIndex="5" Expression="Cluster_Size_tot" Label="Cluster_Size_tot" Title="Cluster_Size_tot" Unit="" Internal="Cluster_Size_tot" Type="F" Min="1.00000000e+00" Max="1.17790000e+04"/>
-    <Variable VarIndex="6" Expression="Cluster_x" Label="Cluster_x" Title="Cluster_x" Unit="" Internal="Cluster_x" Type="F" Min="-3.12125187e+01" Max="3.12101269e+01"/>
-    <Variable VarIndex="7" Expression="Cluster_y" Label="Cluster_y" Title="Cluster_y" Unit="" Internal="Cluster_y" Type="F" Min="-3.12173023e+01" Max="3.12173023e+01"/>
-    <Variable VarIndex="8" Expression="Cluster_z" Label="Cluster_z" Title="Cluster_z" Unit="" Internal="Cluster_z" Type="F" Min="-6.57687454e+01" Max="6.57249985e+01"/>
-    <Variable VarIndex="9" Expression="Cluster_RMS_x" Label="Cluster_RMS_x" Title="Cluster_RMS_x" Unit="" Internal="Cluster_RMS_x" Type="F" Min="1.72564819e-01" Max="8.39480703e+04"/>
-    <Variable VarIndex="10" Expression="Cluster_RMS_y" Label="Cluster_RMS_y" Title="Cluster_RMS_y" Unit="" Internal="Cluster_RMS_y" Type="F" Min="3.29795063e-01" Max="1.67030225e+06"/>
-    <Variable VarIndex="11" Expression="Cluster_Skew_x" Label="Cluster_Skew_x" Title="Cluster_Skew_x" Unit="" Internal="Cluster_Skew_x" Type="F" Min="-2.40092039e+00" Max="1.75807810e+00"/>
-    <Variable VarIndex="12" Expression="Cluster_Skew_y" Label="Cluster_Skew_y" Title="Cluster_Skew_y" Unit="" Internal="Cluster_Skew_y" Type="F" Min="-2.09133267e+00" Max="1.86734664e+00"/>
-    <Variable VarIndex="13" Expression="Cluster_AspectRatio" Label="Cluster_AspectRatio" Title="Cluster_AspectRatio" Unit="" Internal="Cluster_AspectRatio" Type="F" Min="0.00000000e+00" Max="1.76107773e+04"/>
-    <Variable VarIndex="14" Expression="PixelHits_EnergyDeposited_0" Label="PixelHits_EnergyDeposited_0" Title="PixelHits_EnergyDeposited_0" Unit="" Internal="PixelHits_EnergyDeposited_0" Type="F" Min="6.27000000e+02" Max="1.97932000e+05"/>
-    <Variable VarIndex="15" Expression="PixelHits_EnergyDeposited_1" Label="PixelHits_EnergyDeposited_1" Title="PixelHits_EnergyDeposited_1" Unit="" Internal="PixelHits_EnergyDeposited_1" Type="F" Min="0.00000000e+00" Max="1.31221000e+05"/>
-    <Variable VarIndex="16" Expression="PixelHits_EnergyDeposited_2" Label="PixelHits_EnergyDeposited_2" Title="PixelHits_EnergyDeposited_2" Unit="" Internal="PixelHits_EnergyDeposited_2" Type="F" Min="0.00000000e+00" Max="1.31221000e+05"/>
-    <Variable VarIndex="17" Expression="PixelHits_EnergyDeposited_3" Label="PixelHits_EnergyDeposited_3" Title="PixelHits_EnergyDeposited_3" Unit="" Internal="PixelHits_EnergyDeposited_3" Type="F" Min="0.00000000e+00" Max="1.31221000e+05"/>
-    <Variable VarIndex="18" Expression="PixelHits_EnergyDeposited_4" Label="PixelHits_EnergyDeposited_4" Title="PixelHits_EnergyDeposited_4" Unit="" Internal="PixelHits_EnergyDeposited_4" Type="F" Min="0.00000000e+00" Max="8.69945000e+04"/>
-    <Variable VarIndex="19" Expression="PixelHits_EnergyDeposited_5" Label="PixelHits_EnergyDeposited_5" Title="PixelHits_EnergyDeposited_5" Unit="" Internal="PixelHits_EnergyDeposited_5" Type="F" Min="0.00000000e+00" Max="8.69945000e+04"/>
-    <Variable VarIndex="20" Expression="PixelHits_EnergyDeposited_6" Label="PixelHits_EnergyDeposited_6" Title="PixelHits_EnergyDeposited_6" Unit="" Internal="PixelHits_EnergyDeposited_6" Type="F" Min="0.00000000e+00" Max="8.69945000e+04"/>
-    <Variable VarIndex="21" Expression="PixelHits_EnergyDeposited_7" Label="PixelHits_EnergyDeposited_7" Title="PixelHits_EnergyDeposited_7" Unit="" Internal="PixelHits_EnergyDeposited_7" Type="F" Min="0.00000000e+00" Max="8.69945000e+04"/>
-    <Variable VarIndex="22" Expression="PixelHits_EnergyDeposited_8" Label="PixelHits_EnergyDeposited_8" Title="PixelHits_EnergyDeposited_8" Unit="" Internal="PixelHits_EnergyDeposited_8" Type="F" Min="0.00000000e+00" Max="5.76740000e+04"/>
-    <Variable VarIndex="23" Expression="PixelHits_ArrivalTime_0" Label="PixelHits_ArrivalTime_0" Title="PixelHits_ArrivalTime_0" Unit="" Internal="PixelHits_ArrivalTime_0" Type="F" Min="-1.76183808e+00" Max="4.73132277e+00"/>
-    <Variable VarIndex="24" Expression="PixelHits_ArrivalTime_1" Label="PixelHits_ArrivalTime_1" Title="PixelHits_ArrivalTime_1" Unit="" Internal="PixelHits_ArrivalTime_1" Type="F" Min="-1.59928656e+00" Max="4.81518650e+00"/>
-    <Variable VarIndex="25" Expression="PixelHits_ArrivalTime_2" Label="PixelHits_ArrivalTime_2" Title="PixelHits_ArrivalTime_2" Unit="" Internal="PixelHits_ArrivalTime_2" Type="F" Min="-1.60004199e+00" Max="4.60267353e+00"/>
-    <Variable VarIndex="26" Expression="PixelHits_ArrivalTime_3" Label="PixelHits_ArrivalTime_3" Title="PixelHits_ArrivalTime_3" Unit="" Internal="PixelHits_ArrivalTime_3" Type="F" Min="-2.06791973e+00" Max="4.78989697e+00"/>
-    <Variable VarIndex="27" Expression="PixelHits_ArrivalTime_4" Label="PixelHits_ArrivalTime_4" Title="PixelHits_ArrivalTime_4" Unit="" Internal="PixelHits_ArrivalTime_4" Type="F" Min="-1.71488428e+00" Max="4.55320454e+00"/>
-    <Variable VarIndex="28" Expression="PixelHits_ArrivalTime_5" Label="PixelHits_ArrivalTime_5" Title="PixelHits_ArrivalTime_5" Unit="" Internal="PixelHits_ArrivalTime_5" Type="F" Min="-1.76906681e+00" Max="4.65117931e+00"/>
-    <Variable VarIndex="29" Expression="PixelHits_ArrivalTime_6" Label="PixelHits_ArrivalTime_6" Title="PixelHits_ArrivalTime_6" Unit="" Internal="PixelHits_ArrivalTime_6" Type="F" Min="-1.71653962e+00" Max="4.89141846e+00"/>
-    <Variable VarIndex="30" Expression="PixelHits_ArrivalTime_7" Label="PixelHits_ArrivalTime_7" Title="PixelHits_ArrivalTime_7" Unit="" Internal="PixelHits_ArrivalTime_7" Type="F" Min="-1.56619298e+00" Max="4.85560846e+00"/>
-    <Variable VarIndex="31" Expression="PixelHits_ArrivalTime_8" Label="PixelHits_ArrivalTime_8" Title="PixelHits_ArrivalTime_8" Unit="" Internal="PixelHits_ArrivalTime_8" Type="F" Min="-1.74203396e+00" Max="4.99193096e+00"/>
+    <Variable VarIndex="0" Expression="Cluster_ArrivalTime" Label="Cluster_ArrivalTime" Title="Cluster_ArrivalTime" Unit="" Internal="Cluster_ArrivalTime" Type="F" Min="-4.49798971e-01" Max="4.49981391e-01"/>
+    <Variable VarIndex="1" Expression="Cluster_EnergyDeposited" Label="Cluster_EnergyDeposited" Title="Cluster_EnergyDeposited" Unit="" Internal="Cluster_EnergyDeposited" Type="F" Min="3.68849442e-06" Max="7.73312105e-03"/>
+    <Variable VarIndex="2" Expression="Incident_Angle" Label="Incident_Angle" Title="Incident_Angle" Unit="" Internal="Incident_Angle" Type="F" Min="4.34898227e-01" Max="2.71486950e+00"/>
+    <Variable VarIndex="3" Expression="Cluster_Size_x" Label="Cluster_Size_x" Title="Cluster_Size_x" Unit="" Internal="Cluster_Size_x" Type="F" Min="1.00000000e+00" Max="3.75000000e+02"/>
+    <Variable VarIndex="4" Expression="Cluster_Size_y" Label="Cluster_Size_y" Title="Cluster_Size_y" Unit="" Internal="Cluster_Size_y" Type="F" Min="1.00000000e+00" Max="3.55300000e+03"/>
+    <Variable VarIndex="5" Expression="Cluster_Size_tot" Label="Cluster_Size_tot" Title="Cluster_Size_tot" Unit="" Internal="Cluster_Size_tot" Type="F" Min="1.00000000e+00" Max="3.32600000e+03"/>
+    <Variable VarIndex="6" Expression="Cluster_x" Label="Cluster_x" Title="Cluster_x" Unit="" Internal="Cluster_x" Type="F" Min="-3.11060085e+01" Max="3.11044140e+01"/>
+    <Variable VarIndex="7" Expression="Cluster_y" Label="Cluster_y" Title="Cluster_y" Unit="" Internal="Cluster_y" Type="F" Min="-3.11091976e+01" Max="3.11091976e+01"/>
+    <Variable VarIndex="8" Expression="Cluster_z" Label="Cluster_z" Title="Cluster_z" Unit="" Internal="Cluster_z" Type="F" Min="-6.63625031e+01" Max="6.49625015e+01"/>
+    <Variable VarIndex="9" Expression="Cluster_RMS_x" Label="Cluster_RMS_x" Title="Cluster_RMS_x" Unit="" Internal="Cluster_RMS_x" Type="F" Min="2.56146577e-05" Max="8.41818828e+04"/>
+    <Variable VarIndex="10" Expression="Cluster_RMS_y" Label="Cluster_RMS_y" Title="Cluster_RMS_y" Unit="" Internal="Cluster_RMS_y" Type="F" Min="1.08925574e-01" Max="1.00182425e+06"/>
+    <Variable VarIndex="11" Expression="Cluster_Skew_x" Label="Cluster_Skew_x" Title="Cluster_Skew_x" Unit="" Internal="Cluster_Skew_x" Type="F" Min="-1.93091881e+00" Max="1.88485610e+00"/>
+    <Variable VarIndex="12" Expression="Cluster_Skew_y" Label="Cluster_Skew_y" Title="Cluster_Skew_y" Unit="" Internal="Cluster_Skew_y" Type="F" Min="-1.56349599e+00" Max="1.70994353e+00"/>
+    <Variable VarIndex="13" Expression="Cluster_AspectRatio" Label="Cluster_AspectRatio" Title="Cluster_AspectRatio" Unit="" Internal="Cluster_AspectRatio" Type="F" Min="0.00000000e+00" Max="2.44295300e+06"/>
+    <Variable VarIndex="14" Expression="PixelHits_EnergyDeposited_0" Label="PixelHits_EnergyDeposited_0" Title="PixelHits_EnergyDeposited_0" Unit="" Internal="PixelHits_EnergyDeposited_0" Type="F" Min="7.59500000e+02" Max="2.62080000e+04"/>
+    <Variable VarIndex="15" Expression="PixelHits_EnergyDeposited_1" Label="PixelHits_EnergyDeposited_1" Title="PixelHits_EnergyDeposited_1" Unit="" Internal="PixelHits_EnergyDeposited_1" Type="F" Min="0.00000000e+00" Max="2.62080000e+04"/>
+    <Variable VarIndex="16" Expression="PixelHits_EnergyDeposited_2" Label="PixelHits_EnergyDeposited_2" Title="PixelHits_EnergyDeposited_2" Unit="" Internal="PixelHits_EnergyDeposited_2" Type="F" Min="0.00000000e+00" Max="2.62080000e+04"/>
+    <Variable VarIndex="17" Expression="PixelHits_EnergyDeposited_3" Label="PixelHits_EnergyDeposited_3" Title="PixelHits_EnergyDeposited_3" Unit="" Internal="PixelHits_EnergyDeposited_3" Type="F" Min="0.00000000e+00" Max="2.62080000e+04"/>
+    <Variable VarIndex="18" Expression="PixelHits_EnergyDeposited_4" Label="PixelHits_EnergyDeposited_4" Title="PixelHits_EnergyDeposited_4" Unit="" Internal="PixelHits_EnergyDeposited_4" Type="F" Min="0.00000000e+00" Max="2.62080000e+04"/>
+    <Variable VarIndex="19" Expression="PixelHits_EnergyDeposited_5" Label="PixelHits_EnergyDeposited_5" Title="PixelHits_EnergyDeposited_5" Unit="" Internal="PixelHits_EnergyDeposited_5" Type="F" Min="0.00000000e+00" Max="2.62080000e+04"/>
+    <Variable VarIndex="20" Expression="PixelHits_EnergyDeposited_6" Label="PixelHits_EnergyDeposited_6" Title="PixelHits_EnergyDeposited_6" Unit="" Internal="PixelHits_EnergyDeposited_6" Type="F" Min="0.00000000e+00" Max="1.99585000e+04"/>
+    <Variable VarIndex="21" Expression="PixelHits_EnergyDeposited_7" Label="PixelHits_EnergyDeposited_7" Title="PixelHits_EnergyDeposited_7" Unit="" Internal="PixelHits_EnergyDeposited_7" Type="F" Min="0.00000000e+00" Max="1.15750000e+04"/>
+    <Variable VarIndex="22" Expression="PixelHits_EnergyDeposited_8" Label="PixelHits_EnergyDeposited_8" Title="PixelHits_EnergyDeposited_8" Unit="" Internal="PixelHits_EnergyDeposited_8" Type="F" Min="0.00000000e+00" Max="8.81450000e+03"/>
+    <Variable VarIndex="23" Expression="PixelHits_ArrivalTime_0" Label="PixelHits_ArrivalTime_0" Title="PixelHits_ArrivalTime_0" Unit="" Internal="PixelHits_ArrivalTime_0" Type="F" Min="-3.52703214e-01" Max="7.97424197e-01"/>
+    <Variable VarIndex="24" Expression="PixelHits_ArrivalTime_1" Label="PixelHits_ArrivalTime_1" Title="PixelHits_ArrivalTime_1" Unit="" Internal="PixelHits_ArrivalTime_1" Type="F" Min="-3.80745053e-01" Max="8.06654990e-01"/>
+    <Variable VarIndex="25" Expression="PixelHits_ArrivalTime_2" Label="PixelHits_ArrivalTime_2" Title="PixelHits_ArrivalTime_2" Unit="" Internal="PixelHits_ArrivalTime_2" Type="F" Min="-3.52844000e-01" Max="8.18193555e-01"/>
+    <Variable VarIndex="26" Expression="PixelHits_ArrivalTime_3" Label="PixelHits_ArrivalTime_3" Title="PixelHits_ArrivalTime_3" Unit="" Internal="PixelHits_ArrivalTime_3" Type="F" Min="-3.54178607e-01" Max="8.50059748e-01"/>
+    <Variable VarIndex="27" Expression="PixelHits_ArrivalTime_4" Label="PixelHits_ArrivalTime_4" Title="PixelHits_ArrivalTime_4" Unit="" Internal="PixelHits_ArrivalTime_4" Type="F" Min="-3.28379214e-01" Max="8.12524855e-01"/>
+    <Variable VarIndex="28" Expression="PixelHits_ArrivalTime_5" Label="PixelHits_ArrivalTime_5" Title="PixelHits_ArrivalTime_5" Unit="" Internal="PixelHits_ArrivalTime_5" Type="F" Min="-3.66690338e-01" Max="7.66377866e-01"/>
+    <Variable VarIndex="29" Expression="PixelHits_ArrivalTime_6" Label="PixelHits_ArrivalTime_6" Title="PixelHits_ArrivalTime_6" Unit="" Internal="PixelHits_ArrivalTime_6" Type="F" Min="-3.44565928e-01" Max="7.40161121e-01"/>
+    <Variable VarIndex="30" Expression="PixelHits_ArrivalTime_7" Label="PixelHits_ArrivalTime_7" Title="PixelHits_ArrivalTime_7" Unit="" Internal="PixelHits_ArrivalTime_7" Type="F" Min="-3.80850196e-01" Max="7.88814127e-01"/>
+    <Variable VarIndex="31" Expression="PixelHits_ArrivalTime_8" Label="PixelHits_ArrivalTime_8" Title="PixelHits_ArrivalTime_8" Unit="" Internal="PixelHits_ArrivalTime_8" Type="F" Min="-3.23289514e-01" Max="7.15506673e-01"/>
   </Variables>
   <Spectators NSpec="1">
     <Spectator SpecIndex="0" Expression="fold" Label="fold" Title="I" Unit="" Internal="fold" Type="F" Min="0.00000000e+00" Max="4.00000000e+00"/>

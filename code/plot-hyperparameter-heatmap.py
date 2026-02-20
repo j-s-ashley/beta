@@ -15,6 +15,33 @@ def plot(x_header, y_header, x_lab, y_lab):
     y_vals = grid.index.values
     z      = grid.values
 
+    # Get top AUC values for hyperparameter pair
+    flat       = z.ravel()        # flatten for processing
+    valid_mask = ~np.isnan(flat)  # mask non-NaN AUCs
+    n_valid  = np.count_nonzero(valid_mask)
+    if n_valid <5:
+        raise ValueError(
+            f"{x_lab} vs {y_lab}: fewer than 5 valid AUC entries "
+            f"({n_valid} found)"
+        )
+
+    valid_indices = np.nonzero(valid_mask)[0]
+    valid_vals    = flat[valid_mask]
+
+    top_idx      = np.argpartition(valid_vals, -5)[-5:]           # indices of 5 largest values (unsorted)
+    top_idx      = top_idx[np.argsort(valid_vals[top_idx])[::-1]] # sort values
+    top_flat_idx = valid_indices[top_idx]                         # map back to original flat indices
+    rows, cols = np.unravel_index(top_idx, z.shape)               # unflatten for easy printing
+
+    print(f"\nTop 5 AUCs for {x_lab} vs {y_lab}:")
+    for r, c in zip(rows, cols):
+        print(
+            f"AUC={z[r, c]:.6f}, "
+            f"{x_header}={x_vals[c]}, "
+            f"{y_header}={y_vals[r]}"
+        )
+
+
     plt.figure()
 
     mesh = plt.pcolormesh(x_vals, y_vals, z, shading="auto")

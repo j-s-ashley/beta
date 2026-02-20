@@ -1,0 +1,42 @@
+
+Top 5 AUCs for MinNodeSize vs MaxDepth:
+AUC=0.978988, min_node_size=2.5%, max_depth=13
+AUC=0.978353, min_node_size=3%, max_depth=12
+AUC=0.977585, min_node_size=3.5%, max_depth=11
+AUC=0.981451, min_node_size=0.5%, max_depth=11
+AUC=0.981188, min_node_size=0.5%, max_depth=10
+
+Top 5 AUCs for MinNodeSize vs Beta:
+AUC=0.980670, min_node_size=1.5%, beta=0.1
+AUC=0.980511, min_node_size=2.0%, beta=0.1
+AUC=0.980153, min_node_size=2.5%, beta=0.1
+AUC=0.979939, min_node_size=1.5%, beta=0.2
+AUC=0.979744, min_node_size=2.0%, beta=0.2
+
+Top 5 AUCs for MinNodeSize vs NTrees:
+AUC=0.977489, min_node_size=1.0%, n_trees=1000
+AUC=0.979697, min_node_size=1.5%, n_trees=1000
+AUC=0.979775, min_node_size=2.0%, n_trees=1000
+AUC=0.977394, min_node_size=1.0%, n_trees=800
+AUC=0.977581, min_node_size=2.0%, n_trees=800
+
+Top 5 AUCs for MaxDepth vs Beta:
+AUC=0.981714, max_depth=14, beta=0.1
+AUC=0.981623, max_depth=13, beta=0.1
+AUC=0.981616, max_depth=10, beta=0.1
+AUC=0.981608, max_depth=12, beta=0.1
+AUC=0.981604, max_depth=9, beta=0.1
+
+Top 5 AUCs for MaxDepth vs NTrees:
+AUC=0.981878, max_depth=14, n_trees=600
+AUC=0.981860, max_depth=14, n_trees=1400
+AUC=0.981799, max_depth=14, n_trees=400
+AUC=0.981721, max_depth=13, n_trees=600
+AUC=0.981711, max_depth=13, n_trees=1400
+
+Top 5 AUCs for NTrees vs Beta:
+AUC=0.979632, n_trees=1200, beta=0.1
+AUC=0.979620, n_trees=1000, beta=0.1
+AUC=0.979408, n_trees=1200, beta=0.2
+AUC=0.979289, n_trees=1400, beta=0.1
+AUC=0.979267, n_trees=1400, beta=0.3

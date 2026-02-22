@@ -10,7 +10,7 @@ Method         : CrossValidation::BDT
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.30/06       [400902]
 Creator        : jashley
-Date           : Sun Feb 22 07:28:50 2026
+Date           : Sun Feb 22 08:32:50 2026
 Host           : Linux runner-z8jooa6tn-project-190437-concurrent-0-p18ptnml 6.6.13-200.fc39.x86_64 #1 SMP PREEMPT_DYNAMIC Sat Jan 20 18:03:28 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /global/cfs/cdirs/atlas/jashley/mjolnir/beta/code
 Training events: 17483

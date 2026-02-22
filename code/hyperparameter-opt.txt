@@ -41,7 +41,7 @@ Top 5 AUCs for MaxDepth vs NTrees:
 
 Top 5 AUCs for NTrees vs Beta:
    n_trees  beta   auc_avg
-0      400   0.1  0.983013
+0      400   0.1  0.983013 # confirmed at lines 3826-3831 of cv_aucs.csv
 1      200   0.1  0.982980
 2      600   0.1  0.982819
 3      200   0.2  0.982780

@@ -13,10 +13,10 @@ test = 1 fold of clusters
 
 # Parameters
 k_folds        = 5
-n_trees        = [200, 400, 600, 800, 1000, 1200, 1400]
+n_trees        = 400
 min_node_size  = ["1.5%", "2.0%", "2.5%", "3%", "3.5%"]
 max_depth      = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-beta           = [.1, .2, .3, .4, .5, .6, .7, .8, .9]
+beta           = .1
 
 # I/O
 results_csv_name = "cv_aucs.csv"

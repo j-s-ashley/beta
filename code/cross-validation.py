@@ -1,6 +1,6 @@
 import os
-import csv
 import ROOT
+import argparse
 from ROOT import TMVA
 from dataclasses import dataclass
 
@@ -10,16 +10,36 @@ training = k-1 folds of clusters
 test = 1 fold of clusters
 """
 
-# Parameters
-k_folds        = 5
-n_trees        = [200, 400, 600, 800, 1000, 1200, 1400]
-min_node_size  = ["0.5%", "1.0%", "1.5%", "2.0%", "2.5%", "3%", "3.5%"]
-max_depth      = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-beta           = [.1, .2, .3, .4, .5, .6, .7, .8, .9]
+def options():
+    parser = argparse.ArgumentParser(
+        description="Train BDT on data from input TTree files."
+    )
+    parser.add_argument(
+        "-k", required=True, type=int, help="Number of folds"
+    )
+    parser.add_argument(
+        "-t", required=True, type=int, help="VXB sensor thickness"
+    )
+    parser.add_argument(
+        "-s", required=True, type=str, help="MinNodeSize"
+    )
+    parser.add_argument(
+        "-d", required=True, type=int, help="MaxDepth"
+    )
+    parser.add_argument(
+        "-n", required=True, type=int, help="NTrees"
+    )
+    parser.add_argument(
+        "-b", required=True, type=str, help="AdaBoost beta"
+    )
+    return parser.parse_args()
 
-# I/O
-results_csv_name = "cv_aucs.csv"
-results_csv_path = "/global/cfs/projectdirs/atlas/jashley/mjolnir/beta/code/" + results_csv_name 
+k_folds          = options().k
+sensor_thickness = options().t
+min_node_size    = options().s
+max_depth        = options().d
+n_trees          = options().n
+beta             = options().b
 
 # Pixel information helper function
 def make_pixelhit_vars(prefix, label, *, n=9, ymax, xmin, xmax, legend="right", yscale="log"):
@@ -71,31 +91,6 @@ def extract_aucs(cv_results):
     
     # TODO: Expand for future use of multiple methods
     return rows0, auc_avg0, auc_std0
-
-def aucs_to_csv(csv_path, *, thickness, node_size, depth, ntrees, b, fold_rows, auc_avg, auc_std):
-    fields = [
-        "thickness", "k", "n_trees", "min_node_size", "max_depth",
-        "beta", "fold", "auc", "auc_avg", "auc_std"
-    ]
-    # Check for existing .csv, write if none
-    file_exists = os.path.exists(csv_path)
-    with open(csv_path, "a", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=fields)
-        if not file_exists:
-            w.writeheader()
-        for r in fold_rows:
-            w.writerow({
-                "thickness": thickness,
-                "k": k_folds,
-                "n_trees": ntrees,
-                "min_node_size": node_size,
-                "max_depth": depth,
-                "beta": b,
-                "fold": r["fold"],
-                "auc": r["auc"],
-                "auc_avg": auc_avg,
-                "auc_std": auc_std
-            })
 
 # Create variable class
 @dataclass(frozen=True)
@@ -246,8 +241,17 @@ out_file_suffix = "_TMVACV.root"
 def run_tmva_kfold(thickness, node_size, depth, ntrees, b):
     TMVA.Tools.Instance()
     # Create output file
-    out_file_name = str(thickness) + out_file_suffix
-    output_file = ROOT.TFile.Open(out_file_name, "RECREATE")
+    out_file_tag = (
+        str(thickness) + "_" +
+        str(node_size[0]) + "-" +
+        str(node_size[2]) + "_" +
+        str(depth) + "_" +
+        str(ntrees) + "_" +
+        str(b[0]) + "-" +
+        str(b[2])
+    )
+    out_file_name = out_file_tag + out_file_suffix
+    output_file   = ROOT.TFile.Open(out_file_name, "RECREATE")
 
     dataloader = TMVA.DataLoader("datasetcv")
     # Load input variables
@@ -277,7 +281,8 @@ def run_tmva_kfold(thickness, node_size, depth, ntrees, b):
         f"ROC:"                          # enable ROC filling into CrossValidationResult
         f"NumFolds={k_folds}:"
         f"SplitType=Deterministic:"
-        f"SplitExpr=[fold]"              # allow comparison across hyperparameter tuning outputs
+        f"SplitExpr=[fold]:"             # allow comparison across hyperparameter tuning outputs
+        f"FoldFileOutput=True"           # write folds separately
     )
 
     # Cross validation controller
@@ -304,19 +309,8 @@ def run_tmva_kfold(thickness, node_size, depth, ntrees, b):
     results[0].Print()
 
     fold_rows, auc_avg, auc_std = extract_aucs(results)
-    aucs_to_csv(
-        results_csv_path,
-        thickness=thickness,
-        node_size=node_size,
-        depth=depth,
-        ntrees=ntrees,
-        b=b,
-        fold_rows=fold_rows,
-        auc_avg=auc_avg,
-        auc_std=auc_std,
-    )
 
-    print(f"Cross validation completed. Results saved to {out_file_name} and written to {results_csv_name}.")
+    print(f"Cross validation completed. Results saved to {out_file_name}.")
     print("------------------------")
     print(f"-------{thickness} micron-------")
     print("------------------------")
@@ -328,12 +322,4 @@ def run_tmva_kfold(thickness, node_size, depth, ntrees, b):
 
     output_file.Close()
 
-#sensor_thicknesses = [50, 75, 100, 200, 400]
-sensor_thicknesses = [50]
-
-for t in sensor_thicknesses:
-    for size in min_node_size:
-        for depth in max_depth:
-            for n in n_trees:
-                for b in beta:
-                    run_tmva_kfold(t, size, depth, n, b)
+run_tmva_kfold(sensor_thickness, min_node_size, max_depth, n_trees, beta)

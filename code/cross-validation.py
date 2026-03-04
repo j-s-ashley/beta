@@ -1,7 +1,6 @@
 import os
 import csv
 import ROOT
-import random
 from ROOT import TMVA
 from dataclasses import dataclass
 
@@ -13,10 +12,10 @@ test = 1 fold of clusters
 
 # Parameters
 k_folds        = 5
-n_trees        = 400
-min_node_size  = ["1.5%", "2.0%", "2.5%", "3%", "3.5%"]
+n_trees        = [200, 400, 600, 800, 1000, 1200, 1400]
+min_node_size  = ["0.5%", "1.0%", "1.5%", "2.0%", "2.5%", "3%", "3.5%"]
 max_depth      = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-beta           = .1
+beta           = [.1, .2, .3, .4, .5, .6, .7, .8, .9]
 
 # I/O
 results_csv_name = "cv_aucs.csv"
@@ -97,73 +96,6 @@ def aucs_to_csv(csv_path, *, thickness, node_size, depth, ntrees, b, fold_rows, 
                 "auc_avg": auc_avg,
                 "auc_std": auc_std
             })
-
-@dataclass(frozen=True)
-class BDTConfig:
-    node_size: str
-    depth: int
-    beta: float
-
-def make_initial_pool(*, pool_size=60, seed=123):
-    """
-    Random search for configs (better than full grid for high-dim).
-    You can increase pool_size based on compute budget.
-    """
-    rng = random.Random(seed)
-    pool = []
-    for _ in range(pool_size):
-        cfg = BDTConfig(
-            node_size=rng.choice(min_node_size),
-            depth=rng.choice(max_depth),
-            beta=rng.choice(beta),
-        )
-        pool.append(cfg)
-    seen = set()
-    uniq = []
-    for c in pool:
-        key = (c.node_size, c.depth, c.beta)
-        if key not in seen:
-            seen.add(key)
-            uniq.append(c)
-    return uniq
-
-def successive_fractioning(thickness, *, n_candidates=60, budgets=None, eta=3, seed=123):
-    """
-    budgets: increasing NTrees values (budget levels)
-    eta: keep fraction = 1/eta each round
-    """
-    if budgets is None:
-        budgets = [200, 400, 800, 1200]  
-
-    pool = make_initial_pool(pool_size=n_candidates, seed=seed)
-
-    for round_idx, ntrees_budget in enumerate(budgets):
-        scored = []
-        stage_tag = f"_stage{round_idx}_N{ntrees_budget}"
-
-        for cfg in pool:
-            auc_avg = run_tmva_kfold(
-                thickness,
-                cfg.node_size,
-                cfg.depth,
-                ntrees_budget,
-                cfg.beta,
-                stage_tag=stage_tag,
-            )
-            scored.append((auc_avg, cfg))
-
-        # Rank by AUC descending
-        scored.sort(key=lambda x: x[0], reverse=True)
-
-        # Keep top fraction, but never drop below 1
-        keep = max(1, len(scored) // eta)
-        pool = [cfg for _, cfg in scored[:keep]]
-
-        if len(pool) == 1:
-            break
-
-    best_auc, best_cfg = scored[0]
-    return best_cfg, best_auc
 
 # Create variable class
 @dataclass(frozen=True)
@@ -311,16 +243,18 @@ variables |= make_pixelhit_vars(
 # --- K-FOLD CROSS VALIDATION --- #
 out_file_suffix = "_TMVACV.root"
 
-def run_tmva_kfold(thickness, node_size, depth, ntrees, b, *, stage_tag=""):
+def run_tmva_kfold(thickness, node_size, depth, ntrees, b):
     TMVA.Tools.Instance()
-
-    out_file_name = f"{thickness}{stage_tag}_TMVACV.root"
+    # Create output file
+    out_file_name = str(thickness) + out_file_suffix
     output_file = ROOT.TFile.Open(out_file_name, "RECREATE")
 
     dataloader = TMVA.DataLoader("datasetcv")
-    for v_id in variables.keys():
+    # Load input variables
+    for v_id, _ in variables.items():
         dataloader.AddVariable(v_id, "F")
 
+    # Load signal and background files
     sig_file = ROOT.TFile(f"/global/cfs/projectdirs/atlas/jashley/mjolnir/beta/data/MAIA/signal/{thickness}_sig_trng_ttree_k{k_folds}.root")
     bkg_file = ROOT.TFile(f"/global/cfs/projectdirs/atlas/jashley/mjolnir/beta/data/MAIA/bg/{thickness}_bkg_trng_ttree_k{k_folds}.root")
     sig_tree = sig_file.Get("HitTree")
@@ -329,37 +263,47 @@ def run_tmva_kfold(thickness, node_size, depth, ntrees, b, *, stage_tag=""):
     dataloader.AddSignalTree(sig_tree, 1.0)
     dataloader.AddBackgroundTree(bkg_tree, 1.0)
 
+    # Prepare dataset
     dataloader.PrepareTrainingAndTestTree(
         "", "",
         "nTrain_Signal=0:nTrain_Background=0:"
         "nTest_Signal=0:nTest_Background=0:!V"
     )
     dataloader.AddSpectator("fold", "I")
-
+    
     cv_opts = (
         f"!V:"
         f"AnalysisType=Classification:"
-        f"ROC:"
+        f"ROC:"                          # enable ROC filling into CrossValidationResult
         f"NumFolds={k_folds}:"
         f"SplitType=Deterministic:"
-        f"SplitExpr=[fold]"
+        f"SplitExpr=[fold]"              # allow comparison across hyperparameter tuning outputs
     )
 
+    # Cross validation controller
     cv = TMVA.CrossValidation("cv_job", dataloader, output_file, cv_opts)
 
+    # Book method(s) as with factory
     bookmethod_opts = (
-        f"!H:!V:"
-        f"NTrees={ntrees}:MaxDepth={depth}:MinNodeSize={node_size}:"
-        f"BoostType=AdaBoost:AdaBoostBeta={b}:"
-        f"SeparationType=GiniIndex:nCuts=20"
+        f"!H:!V:NTrees={ntrees}:MaxDepth={depth}:"
+        f"MinNodeSize={node_size}:BoostType=AdaBoost:"
+        f"AdaBoostBeta={b}:SeparationType=GiniIndex:nCuts=20"
     )
 
-    cv.BookMethod(TMVA.Types.kBDT, "BDT", bookmethod_opts)
+    cv.BookMethod(
+        TMVA.Types.kBDT,
+        "BDT", bookmethod_opts
+    )
+
+    # Train, test, and evaluate booked method(s)
     cv.Evaluate()
 
+    # Get and store fold-by-fold results
     results = cv.GetResults()
-    fold_rows, auc_avg, auc_std = extract_aucs(results)
+    print("Sanity check print")
+    results[0].Print()
 
+    fold_rows, auc_avg, auc_std = extract_aucs(results)
     aucs_to_csv(
         results_csv_path,
         thickness=thickness,
@@ -372,17 +316,24 @@ def run_tmva_kfold(thickness, node_size, depth, ntrees, b, *, stage_tag=""):
         auc_std=auc_std,
     )
 
-    output_file.Close()
-    return auc_avg
+    print(f"Cross validation completed. Results saved to {out_file_name} and written to {results_csv_name}.")
+    print("------------------------")
+    print(f"-------{thickness} micron-------")
+    print("------------------------")
+    print("CROSS VALIDATION SUMMARY")
+    print("AUCs:", fold_rows)
+    print("avg/std:", auc_avg, auc_std)
+    print("Split expr:", cv.GetSplitExpr())
+    print("Num folds :", cv.GetNumFolds())
 
+    output_file.Close()
+
+#sensor_thicknesses = [50, 75, 100, 200, 400]
 sensor_thicknesses = [50]
 
 for t in sensor_thicknesses:
-    best_cfg, best_auc = successive_fractioning(
-        t,
-        n_candidates=5733,
-        budgets=[800, 1000, 1200, 1400],
-        eta=3,
-        seed=123,
-    )
-    print(f"[thickness={t}] best AUC={best_auc:.4f} with {best_cfg}")
+    for size in min_node_size:
+        for depth in max_depth:
+            for n in n_trees:
+                for b in beta:
+                    run_tmva_kfold(t, size, depth, n, b)

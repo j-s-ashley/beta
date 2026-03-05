@@ -1,0 +1,4 @@
+<FATAL>                          : <BookMVA> fatal error: unable to open input weight file: datasetcv/weights/TMVAClassification_BDT.weights.xml
+***> abort program execution
+Wed Mar  4 16:43:53 PST 2026
+Folds Thickness MinNodeSize MaxDepth NTrees beta

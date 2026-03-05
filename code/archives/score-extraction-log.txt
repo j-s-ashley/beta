@@ -1,0 +1,5 @@
+Saved 446 signal and 3079 background scores to 50_1-5_14_400_0-1_fold1_cv_score_data.npz
+Saved 500 signal and 3024 background scores to 50_1-5_14_400_0-1_fold2_cv_score_data.npz
+Saved 462 signal and 3022 background scores to 50_1-5_14_400_0-1_fold3_cv_score_data.npz
+Saved 452 signal and 3036 background scores to 50_1-5_14_400_0-1_fold4_cv_score_data.npz
+Saved 458 signal and 3004 background scores to 50_1-5_14_400_0-1_fold5_cv_score_data.npz

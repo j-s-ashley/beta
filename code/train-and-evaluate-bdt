@@ -1,31 +1,90 @@
 #!/bin/bash
 
-SENSOR_THICKNESSES=(
-	50
-	75
-	100
-	200
-	400
+CONFIGS=(
+	"5 50 1.5% 14 400 0.1"
+#	"5 50 1.0% 14 400 0.1"
+#	"5 50 1.5% 14 600 0.1"
+#	"5 50 0.5% 14 400 0.1"
+#	"5 50 1.0% 13 400 0.1"
 )
 
 WORKING_DIR="/global/cfs/projectdirs/atlas/jashley/mjolnir/beta/code"
 cd ${WORKING_DIR}
 echo "Changed directory to ${WORKING_DIR}"
 
-for t in "${SENSOR_THICKNESSES[@]}"; do
-	echo "Initiating BDT training for === ${t} === micron sensor data"
-	TRAINING_LOG="${t}_training.log"
-	python run_tmva_bdt.py -t ${t} | tee ${TRAINING_LOG}
+for i in "${!CONFIGS[@]}"
+do
+	echo "Reading configuration ${i}"
+
+	read -r k t s d n b <<< "${CONFIGS[$i]}"
+
+	# Format hyperparameters for easy stringing
+	s_safe=${s//./-}; s_safe=${s_safe//\%/}
+	b_safe=${b//./-}
+	KFCV_TAG="${t}_${s_safe}_${d}_${n}_${b_safe}"
+
+	# Run k-fold CrossValidation
+	echo "Initiating BDT training for ${t} micron sensor data"
+	echo "with ${k} folds, MinNodeSize=${s}, MaxDepth=${d},"
+	echo "NTrees=${n}, AdaBoost beta=${b}"
+
+	TRAINING_LOG="${KFCV_TAG}_training.log"
+	python cross-validation.py \
+	-k ${k} -t ${t} -s ${s} -d ${d} -n ${n} -b ${b} \
+	| tee ${TRAINING_LOG}
 	date >> ${TRAINING_LOG}
+	echo "Folds Thickness MinNodeSize MaxDepth NTrees beta" >> ${TRAINING_LOG}
+	${CONFIGS[$i]} >> ${TRAINING_LOG}
 	echo "=== Training completed, log saved to ${TRAINING_LOG} ==="
-	echo "Initiating BDT evaluation for === ${t} === micron sensor data"
-	EVALUATION_LOG="${t}_evaluation.log"
-	python evaluate_tmva_bdt.py -t ${t}  | tee ${EVALUATION_LOG}
-	date >> ${TRAINING_LOG}
+
+	# Evaluate CrossValidation performance
+	echo "Initiating BDT evaluation for ${t} micron sensor data"
+	echo "with ${k} folds, MinNodeSize=${s}, MaxDepth=${d},"
+	echo "NTrees=${n}, AdaBoost beta=${b}"
+
+	EVALUATION_LOG="${KFCV_TAG}_evaluation.log"
+	python evaluate_tmva_bdt.py \
+	-k ${k} -t ${t} -s ${s} -d ${d} -n ${n} -b ${b} \
+	| tee ${EVALUATION_LOG}
+	date >> ${EVALUATION_LOG}
+	echo "Folds Thickness MinNodeSize MaxDepth NTrees beta" >> ${EVALUATION_LOG}
+	${CONFIGS[$i]} >> ${EVALUATION_LOG}
 	echo "=== Evaluation completed, log saved to ${EVALUATION_LOG} ==="
+
+	# Collect and plot scores
+	echo "Processing BDT performance for ${t} micron sensor data"
+        echo "with ${k} folds, MinNodeSize=${s}, MaxDepth=${d},"
+	echo "NTrees=${n}, AdaBoost beta=${b}"
+
+	PROCESS_LOG="${KFCV_TAG}_process.log"
+	python get_CV_scores.py \
+	-k ${k} -t ${t} -s ${s} -d ${d} -n ${n} -b ${b}
+	python plot_roccs.py \
+	-k ${k} -t ${t} -s ${s} -d ${d} -n ${n} -b ${b} \
+	| tee ${PROCESS_LOG}
+	date >> ${PROCESS_LOG}
+	echo "Folds Thickness MinNodeSize MaxDepth NTrees beta" >> ${PROCESS_LOG}
+	${CONFIGS[$i]} >> ${PROCESS_LOG}
+	
 	# Move output files to intermediary results subdirectory
-	mv ${t}_* temp-results/
-	mv TMVA_output.root temp-results/${t}_TMVA_output.root
+	echo "Contents of current directory:"
+	ls
+	echo "Contents of temp-results directory:"
+	ls temp-results
+	echo "Moving results to temp-results..."
+	mv ${KFCV_TAG}_* temp-results/
+
+	echo "Renaming per-fold ROOT files and moving..."
+	echo "(e.g., 'BDT_fold1.root' -> '${KFCV_TAG}_fold1.root')"
+	for i in {1..5}
+	do
+		mv BDT_fold${i}.root temp-results/${KFCV_TAG}_fold${i}.root
+	done
+	
+	echo "Post-move contents of working directory:"
+	ls
+	echo "Post-move contents of temp-results:"
+	ls temp-results
 done
 
 echo "Changing directory back to"

@@ -34,7 +34,7 @@ max_depth        = options().d
 n_trees          = options().n
 beta             = options().b
 
-out_file_tag = (
+kfcv_tag = (
     str(sensor_thickness) + "_" +
     str(min_node_size[0]) + "-" +
     str(min_node_size[2]) + "_" +
@@ -77,7 +77,7 @@ def export_cv_scores_to_npz(root_basename, method_name="BDT"):
         cv_sig_scores = np.array(sig_scores)
         cv_bkg_scores = np.array(bkg_scores)
 
-        out_file_name = f"{out_file_tag}_fold{fold_idx+1}{out_file_suffix}"
+        out_file_name = f"{kfcv_tag}_fold{fold_idx+1}{out_file_suffix}"
         np.savez(out_file_name,
              cv_sig_scores=cv_sig_scores,
              cv_bkg_scores=cv_bkg_scores

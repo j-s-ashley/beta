@@ -78,7 +78,7 @@ buffers = {v: array('f', [0.]) for v in variables}
 for v in variables:
     reader.AddVariable(v, buffers[v])
 
-reader.BookMVA("BDT", "datasetcv/weights/TMVAClassification_BDT.weights.xml")
+reader.BookMVA("BDT", "datasetcv/weights/cv_job_BDT.weights.xml")
 
 # --- INPUT --- #
 sig_file = ROOT.TFile.Open(f"../data/MAIA/signal/{sensor_thickness}_sig_ttree.root")

@@ -51,12 +51,12 @@ def get_roc_vals(s_scores, b_scores):
         np.ones(s_scores.shape[0], dtype=int),
         np.zeros(b_scores.shape[0], dtype=int)
     ])
-    y_score   = np.concatenate([s_scores, b_scores])
-    fpr, tpr, = roc_curve(y_true, y_score)
+    y_score     = np.concatenate([s_scores, b_scores])
+    fpr, tpr, _ = roc_curve(y_true, y_score)
     return fpr, tpr
 
 def get_scores(fold_idx=None):
-    in_file_tag = get_kfcv_tag()
+    in_file_tag = kfcv_tag
 
     if fold_idx is None:
         in_file_suffix = "_eval_score_data.npz"
@@ -70,8 +70,10 @@ def get_scores(fold_idx=None):
     with np.load(in_file_name) as data:
         return data[s_key], data[b_key]
 
+kfcv_tag = get_kfcv_tag()
+
 # Define ROC curve
-out_file = ROOT.TFile(f"{get_kfcv_tag()}_ROC.root", "RECREATE")
+out_file = ROOT.TFile(f"{kfcv_tag}_ROC.root", "RECREATE")
 out_file.cd()
 
 roc_resolution = 500
@@ -98,19 +100,19 @@ test_roc_auc   = auc(test_mean_eff, test_mean_rej)
 print(f"CrossValidation test mean ROC AUC: {test_roc_auc:.3f}")
 
 # Get evaluation data
-eval_sig_scores, eval_bkg_scores = get_scores(fold)
+eval_sig_scores, eval_bkg_scores = get_scores()
 eval_fpr, eval_tpr = get_roc_vals(eval_sig_scores, eval_bkg_scores)
 
 eval_rej     = 1 - eval_fpr
 eval_eff     = eval_tpr
 eval_roc_auc = auc(eval_eff, eval_rej)
 
-print(f"Evaluation ROC AUC: {test_roc_auc:.3f}")
+print(f"Evaluation ROC AUC: {eval_roc_auc:.3f}")
 
 # Plot mean test ROC curve
 test_n = len(test_mean_eff)
 
-g_test_mean = ROOT.TGraph(n)
+g_test_mean = ROOT.TGraph(test_n)
 
 for i in range(test_n):
     g_test_mean.SetPoint(i, test_mean_eff[i], test_mean_rej[i])
@@ -121,14 +123,14 @@ g_test_mean.SetLineColor(ROOT.kBlue)
 # Plot test uncertainty band
 g_test_band = ROOT.TGraph(2*test_n)
 
-for i in range(n): # upper edge
+for i in range(test_n): # upper edge
     g_test_band.SetPoint(
         i,
         test_mean_eff[i],
         test_mean_rej[i] + test_std_rej[i]
     )
 
-for i in range(n): # lower edge (reverse order to ensure shape closure)
+for i in range(test_n): # lower edge (reverse order to ensure shape closure)
     g_test_band.SetPoint(
         test_n + i,
         test_mean_eff[test_n - 1 - i],
@@ -150,7 +152,10 @@ g_eval.SetLineColor(ROOT.kRed)
 g_eval.SetLineWidth(2)
 
 # Draw stuff
-c = ROOT.TCanvas()
+c = ROOT.TCanvas(f"roc_{kfcv_tag}", f"BDT ROC Curve {kfcv_tag}", 800, 600)
+c.cd()
+
+g_test_band.SetTitle(f"BDT ROC Curve {kfcv_tag}")
 
 g_test_band.Draw("AF")
 g_test_mean.Draw("L SAME")
@@ -161,14 +166,23 @@ g_test_band.GetYaxis().SetTitle("Background rejection")
 g_test_band.SetMinimum(0)
 g_test_band.SetMaximum(1)
 
-legend = ROOT.TLegend(0.7, 0.65, 0.9, 0.8)
-legend.AddEntry(g_test_mean, "Mean test", "l")
-legend.AddEntry(g_eval, "Evaluation", "l")
-legend.AddEntry(g_test_band, "Test uncertainty", "f")
+legend = ROOT.TLegend(0.12, 0.75, 0.35, 0.88)
+legend.AddEntry(g_test_mean, "Mean k-fold CV", "l")
+legend.AddEntry(g_eval, "Held-out evaluation sample", "l")
+legend.AddEntry(g_test_band, "#pm1#sigma TPR at fixed FPR across folds", "f")
 legend.SetBorderSize(0)
 legend.Draw()
 
-c.SaveAs(f"{get_kfcv_tag()}.png")
+c.Modified()
+c.Update()
+
+c.SaveAs(f"{kfcv_tag}.pdf")
+
+out_file.cd()
+
 c.Write()
+g_test_band.Write()
+g_test_mean.Write()
+g_eval.Write()
 
 out_file.Close()

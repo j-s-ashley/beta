@@ -76,28 +76,35 @@ kfcv_tag = get_kfcv_tag()
 out_file = ROOT.TFile(f"{kfcv_tag}_ROC.root", "RECREATE")
 out_file.cd()
 
-roc_resolution = 500
-fpr_grid       = np.linspace(0, 1, roc_resolution)
-
 # Get CrossValidation data
 test_tpr_folds = []
+test_fpr_folds = []
+test_roc_aucs  = []
 
 for fold in range(5):
-    test_sig_scores, test_bkg_scores = get_scores(fold)
-    test_fpr, test_tpr = get_roc_vals(test_sig_scores, test_bkg_scores)
-    # Interpolate TPR onto common FPR grid
-    test_tpr_interp = np.interp(fpr_grid, test_fpr, test_tpr)
-    test_tpr_folds.append(test_tpr_interp)
+    fold_sig_scores, fold_bkg_scores = get_scores(fold)
+    fold_fpr, fold_tpr = get_roc_vals(fold_sig_scores, fold_bkg_scores)
+    fold_rej = 1 - fold_fpr
+    fold_eff = fold_tpr
+    fold_auc = auc(fold_eff, fold_rej)
+    test_tpr_folds.append(fold_tpr)
+    test_fpr_folds.append(fold_fpr)
+    test_roc_aucs.append(fold_auc)
 
-test_tpr_folds = np.array(test_tpr_folds) # shape (5, roc_resolution)
-test_mean_tpr  = np.mean(test_tpr_folds, axis=0)
-test_std_tpr   = np.std(test_tpr_folds, axis=0)
-test_mean_rej  = 1 - fpr_grid
-test_mean_eff  = test_mean_tpr
-test_std_rej   = test_std_tpr                  # rejection uses same var
-test_roc_auc   = auc(test_mean_eff, test_mean_rej)
+# Find max and min test datasets
+max_test_auc = max(test_roc_aucs)
+min_test_auc = min(test_roc_aucs)
+max_fold = test_roc_aucs.index(max_test_auc)
+min_fold = test_roc_aucs.index(min_test_auc)
 
-print(f"CrossValidation test mean ROC AUC: {test_roc_auc:.3f}")
+max_fold_rej = 1 - test_fpr_folds[max_fold]
+max_fold_eff = test_tpr_folds[max_fold]
+
+min_fold_rej = 1 - test_fpr_folds[min_fold]
+min_fold_eff = test_tpr_folds[min_fold]
+
+print(f"CrossValidation test max ROC AUC: {max_test_auc:.3f}")
+print(f"CrossValidation test min ROC AUC: {min_test_auc:.3f}")
 
 # Get evaluation data
 eval_sig_scores, eval_bkg_scores = get_scores()
@@ -110,6 +117,7 @@ eval_roc_auc = auc(eval_eff, eval_rej)
 print(f"Evaluation ROC AUC: {eval_roc_auc:.3f}")
 
 # Plot mean test ROC curve
+# TODO: swap all test data to plot max and min boundaries w/ shading
 test_n = len(test_mean_eff)
 
 g_test_mean = ROOT.TGraph(test_n)

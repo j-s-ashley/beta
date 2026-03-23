@@ -76,36 +76,6 @@ kfcv_tag = get_kfcv_tag()
 out_file = ROOT.TFile(f"{kfcv_tag}_ROC.root", "RECREATE")
 out_file.cd()
 
-# Get CrossValidation data
-test_tpr_folds = []
-test_fpr_folds = []
-test_roc_aucs  = []
-
-for fold in range(5):
-    fold_sig_scores, fold_bkg_scores = get_scores(fold)
-    fold_fpr, fold_tpr = get_roc_vals(fold_sig_scores, fold_bkg_scores)
-    fold_rej = 1 - fold_fpr
-    fold_eff = fold_tpr
-    fold_auc = auc(fold_eff, fold_rej)
-    test_tpr_folds.append(fold_tpr)
-    test_fpr_folds.append(fold_fpr)
-    test_roc_aucs.append(fold_auc)
-
-# Find max and min test datasets
-max_test_auc = max(test_roc_aucs)
-min_test_auc = min(test_roc_aucs)
-max_fold = test_roc_aucs.index(max_test_auc)
-min_fold = test_roc_aucs.index(min_test_auc)
-
-max_fold_rej = 1 - test_fpr_folds[max_fold]
-max_fold_eff = test_tpr_folds[max_fold]
-
-min_fold_rej = 1 - test_fpr_folds[min_fold]
-min_fold_eff = test_tpr_folds[min_fold]
-
-print(f"CrossValidation test max ROC AUC: {max_test_auc:.3f}")
-print(f"CrossValidation test min ROC AUC: {min_test_auc:.3f}")
-
 # Get evaluation data
 eval_sig_scores, eval_bkg_scores = get_scores()
 eval_fpr, eval_tpr = get_roc_vals(eval_sig_scores, eval_bkg_scores)
@@ -116,29 +86,79 @@ eval_roc_auc = auc(eval_eff, eval_rej)
 
 print(f"Evaluation ROC AUC: {eval_roc_auc:.3f}")
 
-# TODO: swap all test data to plot max and min boundaries w/ shading
+roc_resolution = len(eval_eff)
+fpr_grid       = np.linspace(0, 1, roc_resolution)
+
+# Get CrossValidation data
+test_tpr_folds = []
+
+for fold in range(5):
+    test_sig_scores, test_bkg_scores = get_scores(fold)
+    test_fpr, test_tpr = get_roc_vals(test_sig_scores, test_bkg_scores)
+    # Interpolate TPR onto common FPR grid
+    test_tpr_interp = np.interp(fpr_grid, test_fpr, test_tpr)
+    test_tpr_folds.append(test_tpr_interp)
+
+test_tpr_folds = np.array(test_tpr_folds) # shape (5, roc_resolution)
+
+test_fpr_folds = []
+
+for fold in range(5):
+    test_sig_scores, test_bkg_scores = get_scores(fold)
+    test_fpr, test_tpr = get_roc_vals(test_sig_scores, test_bkg_scores)
+    # Interpolate FPR onto common TPR grid
+    test_fpr_interp = np.interp(fpr_grid, test_tpr, test_fpr)
+    test_fpr_folds.append(test_fpr_interp)
+
+test_fpr_folds = np.array(test_fpr_folds) # shape (5, roc_resolution)
+
+test_mean_tpr  = np.mean(test_tpr_folds, axis=0)
+test_std_tpr   = np.std(test_tpr_folds, axis=0)
+test_mean_rej  = 1 - fpr_grid
+test_mean_eff  = test_mean_tpr
+test_std_rej   = np.std(test_fpr_folds, axis=0)
+test_roc_auc   = auc(test_mean_eff, test_mean_rej)
+
+print(f"CrossValidation test mean ROC AUC: {test_roc_auc:.3f}")
+
 # Plot test uncertainty band
-max_fold_len = len(max_fold_eff)
-min_fold_len = len(min_fold_eff)
+g_vert_band = ROOT.TGraph(2*roc_resolution)
 
-g_test_band = ROOT.TGraph(max_fold_len + min_fold_len)
-
-for i in range(max_fold_len): # upper edge
-    g_test_band.SetPoint(
+for i in range(roc_resolution): # upper edge, vertical
+    g_vert_band.SetPoint(
         i,
-        max_fold_eff[i],
-        max_fold_rej[i]
+        eval_eff[i],
+        eval_rej[i] + test_std_rej[i]
     )
 
-for i in range(min_fold_len): # lower edge (reverse order to ensure shape closure)
-    g_test_band.SetPoint(
-        min_fold_len + i,
-        min_fold_eff[min_fold_len - 1 - i],
-        min_fold_rej[min_fold_len - 1 - i]
+for i in range(roc_resolution): # lower edge, vertical (reverse order to ensure shape closure)
+    g_vert_band.SetPoint(
+        roc_resolution + i,
+        eval_eff[roc_resolution - 1 - i],
+        eval_rej[roc_resolution - 1 - i] - test_std_rej[roc_resolution - 1 - i]
     )
 
-g_test_band.SetFillColorAlpha(ROOT.kBlue, 0.3)
-g_test_band.SetLineColor(0)
+g_vert_band.SetFillColorAlpha(ROOT.kBlue, 0.3)
+g_vert_band.SetLineColor(0)
+
+g_horz_band = ROOT.TGraph(2*roc_resolution)
+
+for i in range(roc_resolution): # upper edge, horizontal
+    g_horz_band.SetPoint(
+        i,
+        eval_eff[i] + test_std_tpr[i],
+        eval_rej[i]
+    )
+
+for i in range(roc_resolution): # lower edge, horizontal (reverse order to ensure shape closure)
+    g_horz_band.SetPoint(
+        roc_resolution + i,
+        eval_eff[roc_resolution - 1 - i] - test_std_tpr[roc_resolution - 1 - i],
+        eval_rej[roc_resolution - 1 - i]
+    )
+
+g_horz_band.SetFillColorAlpha(ROOT.kBlue, 0.3)
+g_horz_band.SetLineColor(0)
 
 # Plot evaluation ROC curve
 eval_n = len(eval_eff)
@@ -155,19 +175,18 @@ g_eval.SetLineWidth(2)
 c = ROOT.TCanvas(f"roc_{kfcv_tag}", f"BDT ROC Curve {kfcv_tag}", 800, 600)
 c.cd()
 
-g_test_band.SetTitle(f"BDT ROC Curve {kfcv_tag}")
+g_vert_band.SetTitle(f"BDT ROC Curve {kfcv_tag}")
 
-g_test_band.Draw("AF")
+g_vert_band.Draw("AF")
+g_horz_band.Draw("AF")
 g_eval.Draw("L SAME")
 
-g_test_band.GetXaxis().SetTitle("Signal efficiency")
-g_test_band.GetYaxis().SetTitle("Background rejection")
-g_test_band.SetMinimum(0)
-g_test_band.SetMaximum(1)
+g_vert_band.GetXaxis().SetTitle("Signal efficiency")
+g_vert_band.GetYaxis().SetTitle("Background rejection")
 
-legend = ROOT.TLegend(0.12, 0.75, 0.35, 0.88)
+legend = ROOT.TLegend(0.12, 0.12, 0.35, 0.25)
 legend.AddEntry(g_eval, "Held-out evaluation sample", "l")
-legend.AddEntry(g_test_band, "Min and max k-fold CV range", "f")
+legend.AddEntry(g_vert_band, "#pm1#sigma TPR at fixed FPR across folds", "f")
 legend.SetBorderSize(0)
 legend.Draw()
 
@@ -179,7 +198,8 @@ c.SaveAs(f"{kfcv_tag}_rocc.pdf")
 out_file.cd()
 
 c.Write()
-g_test_band.Write()
+g_vert_band.Write()
+g_horz_band.Write()
 g_eval.Write()
 
 out_file.Close()

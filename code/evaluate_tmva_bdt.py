@@ -78,11 +78,14 @@ buffers = {v: array('f', [0.]) for v in variables}
 for v in variables:
     reader.AddVariable(v, buffers[v])
 
+fold = array('i', [0]) # integer spectator (replaces "I" from training)
+reader.AddSpectator("fold", fold)
+
 reader.BookMVA("BDT", "datasetcv/weights/cv_job_BDT.weights.xml")
 
 # --- INPUT --- #
-sig_file = ROOT.TFile.Open(f"../data/MAIA/signal/{sensor_thickness}_sig_ttree.root")
-bkg_file = ROOT.TFile.Open(f"../data/MAIA/bg/{sensor_thickness}_bkg_ttree.root")
+sig_file = ROOT.TFile.Open(f"../data/MAIA/signal/{sensor_thickness}_sig_eval_ttree.root")
+bkg_file = ROOT.TFile.Open(f"../data/MAIA/bg/{sensor_thickness}_bkg_eval_ttree.root")
 sig_tree = sig_file.Get("HitTree")
 bkg_tree = bkg_file.Get("HitTree")
 
@@ -101,7 +104,7 @@ evaluate_flat_tree(bkg_tree, bkg_scores)
 
 y_true      = np.array([1]*len(sig_scores) + [0]*len(bkg_scores))
 y_score     = np.array(sig_scores + bkg_scores)
-fpr, tpr,  = roc_curve(y_true, y_score)
+fpr, tpr, _ = roc_curve(y_true, y_score)
 bkg_rej     = 1 - fpr
 sig_eff     = tpr
 roc_auc     = auc(sig_eff, bkg_rej)

@@ -120,10 +120,10 @@ DataSetInfo              : [datasetcv] : Added class "Background"
                          : 
 <HEADER> BDT_fold1                : #events: (reweighted) sig: 6979 bkg: 6979
                          : #events: (unweighted) sig: 1872 bkg: 12086
-                         : Training 400 Decision Trees ... patience please
-                         : Elapsed time for training with 13958 events: 15 sec         
+                         : Training 600 Decision Trees ... patience please
+                         : Elapsed time for training with 13958 events: 23.5 sec         
 <HEADER> BDT_fold1                : [datasetcv] : Evaluation of BDT_fold1 on training sample (13958 events)
-                         : Elapsed time for evaluation of 13958 events: 0.79 sec       
+                         : Elapsed time for evaluation of 13958 events: 1.34 sec       
                          : Creating xml weight file: datasetcv/weights/cv_job_BDT_fold1.weights.xml
                          : Creating standalone class: datasetcv/weights/cv_job_BDT_fold1.class.C
                          : ./BDT_fold1.root:/datasetcv/Method_BDT/BDT_fold1
@@ -131,7 +131,7 @@ DataSetInfo              : [datasetcv] : Added class "Background"
 <HEADER> Factory                  : Test method: BDT_fold1 for Classification performance
                          : 
 <HEADER> BDT_fold1                : [datasetcv] : Evaluation of BDT_fold1 on testing sample (3525 events)
-                         : Elapsed time for evaluation of 3525 events: 0.196 sec       
+                         : Elapsed time for evaluation of 3525 events: 0.31 sec       
 <HEADER> Factory                  : Evaluate all methods
 <HEADER> Factory                  : Evaluate classifier: BDT_fold1
                          : 
@@ -188,7 +188,7 @@ DataSetInfo              : [datasetcv] : Added class "Background"
                          : -------------------------------------------------------------------------------------------------------------------
                          : DataSet       MVA                       
                          : Name:         Method:          ROC-integ
-                         : datasetcv     BDT_fold1      : 0.984
+                         : datasetcv     BDT_fold1      : 0.985
                          : -------------------------------------------------------------------------------------------------------------------
                          : 
                          : Testing efficiency compared to training efficiency (overtraining check)
@@ -196,7 +196,7 @@ DataSetInfo              : [datasetcv] : Added class "Background"
                          : DataSet              MVA              Signal efficiency: from test sample (from training sample) 
                          : Name:                Method:          @B=0.01             @B=0.10            @B=0.30   
                          : -------------------------------------------------------------------------------------------------------------------
-                         : datasetcv            BDT_fold1      : 0.659 (0.882)       0.974 (0.980)      1.000 (1.000)
+                         : datasetcv            BDT_fold1      : 0.674 (0.917)       0.978 (0.985)      0.999 (1.000)
                          : -------------------------------------------------------------------------------------------------------------------
                          : 
 <HEADER> Dataset:datasetcv        : Created tree 'TestTree' with 3525 events
@@ -210,10 +210,10 @@ DataSetInfo              : [datasetcv] : Added class "Background"
                          : 
 <HEADER> BDT_fold2                : #events: (reweighted) sig: 6979.5 bkg: 6979.5
                          : #events: (unweighted) sig: 1818 bkg: 12141
-                         : Training 400 Decision Trees ... patience please
-                         : Elapsed time for training with 13959 events: 16 sec         
+                         : Training 600 Decision Trees ... patience please
+                         : Elapsed time for training with 13959 events: 23 sec         
 <HEADER> BDT_fold2                : [datasetcv] : Evaluation of BDT_fold2 on training sample (13959 events)
-                         : Elapsed time for evaluation of 13959 events: 0.909 sec       
+                         : Elapsed time for evaluation of 13959 events: 1.39 sec       
                          : Creating xml weight file: datasetcv/weights/cv_job_BDT_fold2.weights.xml
                          : Creating standalone class: datasetcv/weights/cv_job_BDT_fold2.class.C
                          : ./BDT_fold2.root:/datasetcv/Method_BDT/BDT_fold2
@@ -221,7 +221,7 @@ DataSetInfo              : [datasetcv] : Added class "Background"
 <HEADER> Factory                  : Test method: BDT_fold2 for Classification performance
                          : 
 <HEADER> BDT_fold2                : [datasetcv] : Evaluation of BDT_fold2 on testing sample (3524 events)
-                         : Elapsed time for evaluation of 3524 events: 0.205 sec       
+                         : Elapsed time for evaluation of 3524 events: 0.326 sec       
 <HEADER> Factory                  : Evaluate all methods
 <HEADER> Factory                  : Evaluate classifier: BDT_fold2
                          : 
@@ -286,7 +286,7 @@ DataSetInfo              : [datasetcv] : Added class "Background"
                          : DataSet              MVA              Signal efficiency: from test sample (from training sample) 
                          : Name:                Method:          @B=0.01             @B=0.10            @B=0.30   
                          : -------------------------------------------------------------------------------------------------------------------
-                         : datasetcv            BDT_fold2      : 0.627 (0.884)       0.965 (0.972)      0.993 (0.993)
+                         : datasetcv            BDT_fold2      : 0.629 (0.910)       0.962 (0.966)      0.992 (0.992)
                          : -------------------------------------------------------------------------------------------------------------------
                          : 
 <HEADER> Dataset:datasetcv        : Created tree 'TestTree' with 3524 events
@@ -300,10 +300,10 @@ DataSetInfo              : [datasetcv] : Added class "Background"
                          : 
 <HEADER> BDT_fold3                : #events: (reweighted) sig: 6999.5 bkg: 6999.5
                          : #events: (unweighted) sig: 1856 bkg: 12143
-                         : Training 400 Decision Trees ... patience please
-                         : Elapsed time for training with 13999 events: 17.6 sec         
+                         : Training 600 Decision Trees ... patience please
+                         : Elapsed time for training with 13999 events: 23.6 sec         
 <HEADER> BDT_fold3                : [datasetcv] : Evaluation of BDT_fold3 on training sample (13999 events)
-                         : Elapsed time for evaluation of 13999 events: 0.921 sec       
+                         : Elapsed time for evaluation of 13999 events: 1.44 sec       
                          : Creating xml weight file: datasetcv/weights/cv_job_BDT_fold3.weights.xml
                          : Creating standalone class: datasetcv/weights/cv_job_BDT_fold3.class.C
                          : ./BDT_fold3.root:/datasetcv/Method_BDT/BDT_fold3
@@ -311,7 +311,7 @@ DataSetInfo              : [datasetcv] : Added class "Background"
 <HEADER> Factory                  : Test method: BDT_fold3 for Classification performance
                          : 
 <HEADER> BDT_fold3                : [datasetcv] : Evaluation of BDT_fold3 on testing sample (3484 events)
-                         : Elapsed time for evaluation of 3484 events: 0.227 sec       
+                         : Elapsed time for evaluation of 3484 events: 0.349 sec       
 <HEADER> Factory                  : Evaluate all methods
 <HEADER> Factory                  : Evaluate classifier: BDT_fold3
                          : 
@@ -368,7 +368,7 @@ DataSetInfo              : [datasetcv] : Added class "Background"
                          : -------------------------------------------------------------------------------------------------------------------
                          : DataSet       MVA                       
                          : Name:         Method:          ROC-integ
-                         : datasetcv     BDT_fold3      : 0.983
+                         : datasetcv     BDT_fold3      : 0.982
                          : -------------------------------------------------------------------------------------------------------------------
                          : 
                          : Testing efficiency compared to training efficiency (overtraining check)
@@ -376,7 +376,7 @@ DataSetInfo              : [datasetcv] : Added class "Background"
                          : DataSet              MVA              Signal efficiency: from test sample (from training sample) 
                          : Name:                Method:          @B=0.01             @B=0.10            @B=0.30   
                          : -------------------------------------------------------------------------------------------------------------------
-                         : datasetcv            BDT_fold3      : 0.669 (0.846)       0.968 (0.969)      0.992 (0.992)
+                         : datasetcv            BDT_fold3      : 0.662 (0.873)       0.971 (0.973)      0.992 (0.992)
                          : -------------------------------------------------------------------------------------------------------------------
                          : 
 <HEADER> Dataset:datasetcv        : Created tree 'TestTree' with 3484 events
@@ -390,10 +390,10 @@ DataSetInfo              : [datasetcv] : Added class "Background"
                          : 
 <HEADER> BDT_fold4                : #events: (reweighted) sig: 6997.5 bkg: 6997.5
                          : #events: (unweighted) sig: 1866 bkg: 12129
-                         : Training 400 Decision Trees ... patience please
-                         : Elapsed time for training with 13995 events: 17.9 sec         
+                         : Training 600 Decision Trees ... patience please
+                         : Elapsed time for training with 13995 events: 24.5 sec         
 <HEADER> BDT_fold4                : [datasetcv] : Evaluation of BDT_fold4 on training sample (13995 events)
-                         : Elapsed time for evaluation of 13995 events: 0.957 sec       
+                         : Elapsed time for evaluation of 13995 events: 1.42 sec       
                          : Creating xml weight file: datasetcv/weights/cv_job_BDT_fold4.weights.xml
                          : Creating standalone class: datasetcv/weights/cv_job_BDT_fold4.class.C
                          : ./BDT_fold4.root:/datasetcv/Method_BDT/BDT_fold4
@@ -401,7 +401,7 @@ DataSetInfo              : [datasetcv] : Added class "Background"
 <HEADER> Factory                  : Test method: BDT_fold4 for Classification performance
                          : 
 <HEADER> BDT_fold4                : [datasetcv] : Evaluation of BDT_fold4 on testing sample (3488 events)
-                         : Elapsed time for evaluation of 3488 events: 0.23 sec       
+                         : Elapsed time for evaluation of 3488 events: 0.357 sec       
 <HEADER> Factory                  : Evaluate all methods
 <HEADER> Factory                  : Evaluate classifier: BDT_fold4
                          : 
@@ -466,7 +466,7 @@ DataSetInfo              : [datasetcv] : Added class "Background"
                          : DataSet              MVA              Signal efficiency: from test sample (from training sample) 
                          : Name:                Method:          @B=0.01             @B=0.10            @B=0.30   
                          : -------------------------------------------------------------------------------------------------------------------
-                         : datasetcv            BDT_fold4      : 0.639 (0.873)       0.980 (0.987)      1.000 (1.000)
+                         : datasetcv            BDT_fold4      : 0.603 (0.896)       0.980 (0.987)      1.000 (1.000)
                          : -------------------------------------------------------------------------------------------------------------------
                          : 
 <HEADER> Dataset:datasetcv        : Created tree 'TestTree' with 3488 events
@@ -480,10 +480,10 @@ DataSetInfo              : [datasetcv] : Added class "Background"
                          : 
 <HEADER> BDT_fold5                : #events: (reweighted) sig: 7010.5 bkg: 7010.5
                          : #events: (unweighted) sig: 1860 bkg: 12161
-                         : Training 400 Decision Trees ... patience please
-                         : Elapsed time for training with 14021 events: 17.6 sec         
+                         : Training 600 Decision Trees ... patience please
+                         : Elapsed time for training with 14021 events: 26.2 sec         
 <HEADER> BDT_fold5                : [datasetcv] : Evaluation of BDT_fold5 on training sample (14021 events)
-                         : Elapsed time for evaluation of 14021 events: 0.913 sec       
+                         : Elapsed time for evaluation of 14021 events: 1.56 sec       
                          : Creating xml weight file: datasetcv/weights/cv_job_BDT_fold5.weights.xml
                          : Creating standalone class: datasetcv/weights/cv_job_BDT_fold5.class.C
                          : ./BDT_fold5.root:/datasetcv/Method_BDT/BDT_fold5
@@ -491,7 +491,7 @@ DataSetInfo              : [datasetcv] : Added class "Background"
 <HEADER> Factory                  : Test method: BDT_fold5 for Classification performance
                          : 
 <HEADER> BDT_fold5                : [datasetcv] : Evaluation of BDT_fold5 on testing sample (3462 events)
-                         : Elapsed time for evaluation of 3462 events: 0.218 sec       
+                         : Elapsed time for evaluation of 3462 events: 0.371 sec       
 <HEADER> Factory                  : Evaluate all methods
 <HEADER> Factory                  : Evaluate classifier: BDT_fold5
                          : 
@@ -556,7 +556,7 @@ DataSetInfo              : [datasetcv] : Added class "Background"
                          : DataSet              MVA              Signal efficiency: from test sample (from training sample) 
                          : Name:                Method:          @B=0.01             @B=0.10            @B=0.30   
                          : -------------------------------------------------------------------------------------------------------------------
-                         : datasetcv            BDT_fold5      : 0.635 (0.877)       0.967 (0.971)      0.997 (0.998)
+                         : datasetcv            BDT_fold5      : 0.625 (0.897)       0.969 (0.976)      1.000 (1.000)
                          : -------------------------------------------------------------------------------------------------------------------
                          : 
 <HEADER> Dataset:datasetcv        : Created tree 'TestTree' with 3462 events
@@ -704,7 +704,7 @@ DataSetInfo              : [datasetcv] : Added class "Background"
                          : ----------------------------------------------------
                          : Elapsed time for training with 17483 events: 4.05e-06 sec         
 <HEADER> BDT                      : [datasetcv] : Evaluation of BDT on training sample (17483 events)
-                         : Elapsed time for evaluation of 17483 events: 0.667 sec       
+                         : Elapsed time for evaluation of 17483 events: 1.11 sec       
                          : Creating xml weight file: datasetcv/weights/cv_job_BDT.weights.xml
                          : Creating standalone class: datasetcv/weights/cv_job_BDT.class.C
 <WARNING> <WARNING>                : MakeClassSpecificHeader not implemented for CrossValidation
@@ -713,7 +713,7 @@ DataSetInfo              : [datasetcv] : Added class "Background"
 <HEADER> Factory                  : Test method: BDT for Classification performance
                          : 
 <HEADER> BDT                      : [datasetcv] : Evaluation of BDT on testing sample (17483 events)
-                         : Elapsed time for evaluation of 17483 events: 0.66 sec       
+                         : Elapsed time for evaluation of 17483 events: 1.12 sec       
 <HEADER> Factory                  : Evaluate all methods
 <HEADER> Factory                  : Evaluate classifier: BDT
                          : 
@@ -778,7 +778,7 @@ DataSetInfo              : [datasetcv] : Added class "Background"
                          : DataSet              MVA              Signal efficiency: from test sample (from training sample) 
                          : Name:                Method:          @B=0.01             @B=0.10            @B=0.30   
                          : -------------------------------------------------------------------------------------------------------------------
-                         : datasetcv            BDT            : 0.645 (0.645)       0.972 (0.972)      0.997 (0.997)
+                         : datasetcv            BDT            : 0.635 (0.635)       0.970 (0.970)      0.997 (0.997)
                          : -------------------------------------------------------------------------------------------------------------------
                          : 
 <HEADER> Dataset:datasetcv        : Created tree 'TestTree' with 17483 events
@@ -789,24 +789,24 @@ DataSetInfo              : [datasetcv] : Added class "Background"
                          : For citation information, please visit: http://tmva.sf.net/citeTMVA.html
                          : Evaluation done.
 <HEADER> CrossValidation          :  ==== Results ====
-                         : Fold  0 ROC-Int : 0.9843
-                         : Fold  1 ROC-Int : 0.9825
-                         : Fold  2 ROC-Int : 0.9825
-                         : Fold  3 ROC-Int : 0.9853
-                         : Fold  4 ROC-Int : 0.9821
+                         : Fold  0 ROC-Int : 0.9846
+                         : Fold  1 ROC-Int : 0.9817
+                         : Fold  2 ROC-Int : 0.9823
+                         : Fold  3 ROC-Int : 0.9845
+                         : Fold  4 ROC-Int : 0.9819
                          : ------------------------
-                         : Average ROC-Int : 0.9833
+                         : Average ROC-Int : 0.9830
                          : Std-Dev ROC-Int : 0.0014
 Sanity check print
-Cross validation completed. Results saved to 50_1-5_14_400_0-1_TMVACV.root.
+Cross validation completed. Results saved to 50_1-5_14_600_0-1_TMVACV.root.
 ------------------------
 -------50 micron-------
 ------------------------
 CROSS VALIDATION SUMMARY
-AUCs: [{'fold': 0, 'auc': 0.9842561483383179}, {'fold': 1, 'auc': 0.9824874401092529}, {'fold': 2, 'auc': 0.9825099110603333}, {'fold': 3, 'auc': 0.9852587580680847}, {'fold': 4, 'auc': 0.9820708632469177}]
-avg/std: 0.9833166003227234 0.0013733938103541732
+AUCs: [{'fold': 0, 'auc': 0.9845958352088928}, {'fold': 1, 'auc': 0.981686532497406}, {'fold': 2, 'auc': 0.982306182384491}, {'fold': 3, 'auc': 0.9845085144042969}, {'fold': 4, 'auc': 0.9819207787513733}]
+avg/std: 0.9830036163330078 0.0014312179991975427
 Split expr: [fold]
 Num folds : 5
-Tue Mar 10 06:10:06 PDT 2026
+Tue Mar 10 06:14:54 PDT 2026
 Folds Thickness MinNodeSize MaxDepth NTrees beta
-5 50 1.5% 14 400 0.1
+5 50 1.5% 14 600 0.1

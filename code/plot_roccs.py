@@ -116,33 +116,25 @@ eval_roc_auc = auc(eval_eff, eval_rej)
 
 print(f"Evaluation ROC AUC: {eval_roc_auc:.3f}")
 
-# Plot mean test ROC curve
 # TODO: swap all test data to plot max and min boundaries w/ shading
-test_n = len(test_mean_eff)
-
-g_test_mean = ROOT.TGraph(test_n)
-
-for i in range(test_n):
-    g_test_mean.SetPoint(i, test_mean_eff[i], test_mean_rej[i])
-
-g_test_mean.SetLineWidth(2)
-g_test_mean.SetLineColor(ROOT.kBlue)
-
 # Plot test uncertainty band
-g_test_band = ROOT.TGraph(2*test_n)
+max_fold_len = len(max_fold_eff)
+min_fold_len = len(min_fold_eff)
 
-for i in range(test_n): # upper edge
+g_test_band = ROOT.TGraph(max_fold_len + min_fold_len)
+
+for i in range(max_fold_len): # upper edge
     g_test_band.SetPoint(
         i,
-        test_mean_eff[i],
-        test_mean_rej[i] + test_std_rej[i]
+        max_fold_eff[i],
+        max_fold_rej[i]
     )
 
-for i in range(test_n): # lower edge (reverse order to ensure shape closure)
+for i in range(min_fold_len): # lower edge (reverse order to ensure shape closure)
     g_test_band.SetPoint(
-        test_n + i,
-        test_mean_eff[test_n - 1 - i],
-        test_mean_rej[test_n - 1 - i] - test_std_rej[test_n - 1 - i]
+        min_fold_len + i,
+        min_fold_eff[min_fold_len - 1 - i],
+        min_fold_rej[min_fold_len - 1 - i]
     )
 
 g_test_band.SetFillColorAlpha(ROOT.kBlue, 0.3)
@@ -166,7 +158,6 @@ c.cd()
 g_test_band.SetTitle(f"BDT ROC Curve {kfcv_tag}")
 
 g_test_band.Draw("AF")
-g_test_mean.Draw("L SAME")
 g_eval.Draw("L SAME")
 
 g_test_band.GetXaxis().SetTitle("Signal efficiency")
@@ -175,22 +166,20 @@ g_test_band.SetMinimum(0)
 g_test_band.SetMaximum(1)
 
 legend = ROOT.TLegend(0.12, 0.75, 0.35, 0.88)
-legend.AddEntry(g_test_mean, "Mean k-fold CV", "l")
 legend.AddEntry(g_eval, "Held-out evaluation sample", "l")
-legend.AddEntry(g_test_band, "#pm1#sigma TPR at fixed FPR across folds", "f")
+legend.AddEntry(g_test_band, "Min and max k-fold CV range", "f")
 legend.SetBorderSize(0)
 legend.Draw()
 
 c.Modified()
 c.Update()
 
-c.SaveAs(f"{kfcv_tag}.pdf")
+c.SaveAs(f"{kfcv_tag}_rocc.pdf")
 
 out_file.cd()
 
 c.Write()
 g_test_band.Write()
-g_test_mean.Write()
 g_eval.Write()
 
 out_file.Close()

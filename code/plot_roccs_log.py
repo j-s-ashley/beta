@@ -170,8 +170,6 @@ g_eval.Draw("L SAME")
 
 g_test_band.GetXaxis().SetTitle("Signal efficiency")
 g_test_band.GetYaxis().SetTitle("1 - log_{10}(Background rejection)")
-g_test_band.SetMinimum(0)
-g_test_band.SetMaximum(1)
 
 legend = ROOT.TLegend(0.12, 0.75, 0.35, 0.88)
 legend.AddEntry(g_test_mean, "Mean k-fold CV", "l")

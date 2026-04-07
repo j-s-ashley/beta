@@ -2,7 +2,7 @@ import csv
 import math
 import os
 import sys
-import ROOT
+import matplotlib.pyplot as plt
 from collections import defaultdict, OrderedDict
 
 """
@@ -14,9 +14,7 @@ Expected columns:
 thickness,k,n_trees,min_node_size,max_depth,beta,fold,auc,auc_avg,auc_std
 """
 
-# -----------------------------
-# HYPERPARAMETER COMBINATIONS
-# -----------------------------
+# --- HYPERPARAMETER COMBINATIONS --- #
 # Each combo is a dict specifying the first 6 columns
 # IMPORTANT: match types to CSV (ints/floats/strings)
 COMBOS = [
@@ -28,14 +26,12 @@ COMBOS = [
 ]
 
 CSV_PATH = "cv_aucs.csv"
-OUT_PDF  = "auc_boxplot.pdf"
+OUT_PNG  = "auc_boxplot.png"
 
 TITLE    = "AUC distribution across CV folds by hyperparameter combination"
 Y_LABEL  = "AUC"
 
-# -----------------------------
-# Helpers
-# -----------------------------
+# Helpers --- #
 FIRST6 = ["thickness", "k", "n_trees", "min_node_size", "max_depth", "beta"]
 
 def _to_number_if_possible(s):
@@ -109,101 +105,34 @@ def read_auc_by_combo(csv_path, combos):
     return labels, auc_lists
 
 # --- Plot stuff --- #
-def plot_stuff(labels, auc_lists, out_pdf):
-    ROOT.gROOT.SetBatch(True)
-    ROOT.gStyle.SetOptStat(0)
+def plot_stuff(labels, auc_lists, out_png):
+    fig, ax = plt.subplots(figsize=(14, 6))
+    bp = ax.boxplot(auc_lists, labels=labels, showmeans=False, patch_artist=True)
 
-    n = len(labels)
-    if n == 0:
-        raise ValueError("No combinations provided.")
-    if any(len(v) == 0 for v in auc_lists):
-        print("WARNING: Some combinations have 0 matching rows; they will appear empty.", file=sys.stderr)
+    for box in bp["boxes"]:
+        box.set(facecolor="#6ea8fe", alpha=0.35, edgecolor="black", linewidth=1.0)
+    for median in bp["medians"]:
+        median.set(color="black", linewidth=2.0)
+    for whisker in bp["whiskers"]:
+        whisker.set(color="black", linewidth=1.0)
+    for cap in bp["caps"]:
+        cap.set(color="black", linewidth=1.0)
 
-    c = ROOT.TCanvas("c", "c", 1200, 600)
-    c.SetLeftMargin(0.07)
-    c.SetRightMargin(0.02)
-    c.SetBottomMargin(0.28)
-    c.SetTopMargin(0.10)
+    ax.set_title(TITLE)
+    ax.set_ylabel(Y_LABEL)
 
-    # Compute quantiles per combo, then draw TBox + TLine.
-    frame = ROOT.TH2F("frame", TITLE, n, 0.5, n + 0.5, 10, 0.97, 1.01)
-    frame.GetYaxis().SetTitle(Y_LABEL)
-    frame.GetXaxis().SetLabelSize(0.03)
-    frame.GetXaxis().SetTitleSize(0.04)
-    frame.GetYaxis().SetTitleSize(0.04)
-    frame.GetXaxis().SetNdivisions(n, False)
+    flat = [x for vals in auc_lists for x in vals]
+    if flat:
+        ax.set_ylim(min(flat) - 0.001, max(flat) + 0.001)
+    else:
+        ax.set_ylim(0.0, 1.0)
 
-    for i, lab in enumerate(labels, start=1):
-        frame.GetXaxis().SetBinLabel(i, lab)
+    plt.xticks(rotation=35, ha="right")
+    plt.tight_layout()
+    fig.savefig(out_png, dpi=200)
+    print(f"Saved plot to {out_png}")
 
-    frame.Draw("AXIS")
-
-    def quantiles(vals):
-        v = sorted(vals)
-        if len(v) == 0:
-            return None
-        def q(p):
-            # linear interpolation
-            pos = p * (len(v) - 1)
-            lo = int(math.floor(pos))
-            hi = int(math.ceil(pos))
-            if lo == hi:
-                return v[lo]
-            return v[lo] * (hi - pos) + v[hi] * (pos - lo)
-        return {
-            "min": v[0],
-            "q1": q(0.25),
-            "med": q(0.50),
-            "q3": q(0.75),
-            "max": v[-1],
-        }
-
-    box_half_width = 0.25
-    debug_offset   = 0.01 # debug
-    for i, vals in enumerate(auc_lists, start=1):
-        qs = quantiles(vals)
-        if qs is None:
-            print(f"\nQuantile calc failed for data index {i}") # debug
-            continue
-
-        print(f"\nQuantiles for data index {i}")
-        print(qs)
-
-        x1, x2 = i - box_half_width, i + box_half_width
-        # Box (Q1-Q3)
-        box = ROOT.TBox(x1, qs["q1"]+debug_offset, x2, qs["q3"]+debug_offset) # debug
-        debug_offset += 0.005
-        #box = ROOT.TBox(x1, qs["q1"], x2, qs["q3"])
-        box.SetFillColorAlpha(ROOT.kAzure + 1, 0.35)
-        box.SetLineColor(ROOT.kBlack)
-        box.Draw("l f SAME")
-
-        # Median
-        med = ROOT.TLine(x1, qs["med"], x2, qs["med"])
-        med.SetLineWidth(2)
-        med.Draw("SAME")
-
-        # Whiskers
-        w1 = ROOT.TLine(i, qs["min"], i, qs["q1"])
-        w2 = ROOT.TLine(i, qs["q3"], i, qs["max"])
-        w1.Draw("SAME")
-        w2.Draw("SAME")
-
-        # Caps
-        cap1 = ROOT.TLine(i - 0.15, qs["min"], i + 0.15, qs["min"])
-        cap2 = ROOT.TLine(i - 0.15, qs["max"], i + 0.15, qs["max"])
-        cap1.Draw("SAME")
-        cap2.Draw("SAME")
-
-        c.Modified()
-        c.Update()
-
-    c.SaveAs(out_pdf)
-    print(f"Saved PyROOT plot to {out_pdf}")
-
-# -----------------------------
-# Main
-# -----------------------------
+# --- Main --- #
 def main():
     labels, auc_lists = read_auc_by_combo(CSV_PATH, COMBOS)
 
@@ -212,7 +141,7 @@ def main():
         print(f"{lab}: n={len(vals)}")
         print(vals)
 
-    plot_stuff(labels, auc_lists, OUT_PDF)
+    plot_stuff(labels, auc_lists, OUT_PNG)
 
 if __name__ == "__main__":
     main()

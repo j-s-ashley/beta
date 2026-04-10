@@ -1,11 +1,11 @@
 #!/bin/bash
 
 CONFIGS=(
-	"5 50 1.5% 14 400 0.1"
-	"5 50 1.0% 14 400 0.1"
-	"5 50 1.5% 14 600 0.1"
+	#"5 50 1.5% 14 400 0.1"
+	#"5 50 1.0% 14 400 0.1"
+	#"5 50 1.5% 14 600 0.1"
 	"5 50 0.5% 14 400 0.1"
-	"5 50 1.0% 13 400 0.1"
+	#"5 50 1.0% 13 400 0.1"
 )
 
 WORKING_DIR="/global/cfs/projectdirs/atlas/jashley/mjolnir/beta/code"
@@ -28,7 +28,7 @@ do
 	echo "with ${k} folds, MinNodeSize=${s}, MaxDepth=${d},"
 	echo "NTrees=${n}, AdaBoost beta=${b}"
 
-	TRAINING_LOG="${KFCV_TAG}_training.log"
+	TRAINING_LOG="${KFCV_TAG}_v2_training.log"
 	python cross-validation.py \
 	-k ${k} -t ${t} -s ${s} -d ${d} -n ${n} -b ${b} \
 	| tee ${TRAINING_LOG}
@@ -42,7 +42,7 @@ do
 	echo "with ${k} folds, MinNodeSize=${s}, MaxDepth=${d},"
 	echo "NTrees=${n}, AdaBoost beta=${b}"
 
-	EVALUATION_LOG="${KFCV_TAG}_evaluation.log"
+	EVALUATION_LOG="${KFCV_TAG}_v2_evaluation.log"
 	python evaluate_tmva_bdt.py \
 	-k ${k} -t ${t} -s ${s} -d ${d} -n ${n} -b ${b} \
 	| tee ${EVALUATION_LOG}
@@ -56,7 +56,7 @@ do
         echo "with ${k} folds, MinNodeSize=${s}, MaxDepth=${d},"
 	echo "NTrees=${n}, AdaBoost beta=${b}"
 
-	PROCESS_LOG="${KFCV_TAG}_process.log"
+	PROCESS_LOG="${KFCV_TAG}_v2_process.log"
 	python get_CV_scores.py \
 	-k ${k} -t ${t} -s ${s} -d ${d} -n ${n} -b ${b}
 	python plot_roccs.py \
@@ -75,10 +75,10 @@ do
 	mv ${KFCV_TAG}_* temp-results/
 
 	echo "Renaming per-fold ROOT files and moving..."
-	echo "(e.g., 'BDT_fold1.root' -> '${KFCV_TAG}_fold1.root')"
+	echo "(e.g., 'BDT_fold1.root' -> '${KFCV_TAG}_v2_fold1.root')"
 	for i in {1..5}
 	do
-		mv BDT_fold${i}.root temp-results/${KFCV_TAG}_fold${i}.root
+		mv BDT_fold${i}.root temp-results/${KFCV_TAG}_v2_fold${i}.root
 	done
 	
 	echo "Post-move contents of working directory:"

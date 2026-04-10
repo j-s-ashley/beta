@@ -122,25 +122,25 @@ test_roc_auc   = auc(test_mean_eff, test_mean_rej)
 print(f"CrossValidation test mean ROC AUC: {test_roc_auc:.3f}")
 
 # Plot test uncertainty band
-g_vert_band = ROOT.TGraph(2*roc_resolution)
-
-for i in range(roc_resolution): # upper edge, vertical
-    g_vert_band.SetPoint(
-        i,
-        eval_eff[i],
-        eval_rej[i] + test_std_rej[i]
-    )
-
-for i in range(roc_resolution): # lower edge, vertical (reverse order to ensure shape closure)
-    g_vert_band.SetPoint(
-        roc_resolution + i,
-        eval_eff[roc_resolution - 1 - i],
-        eval_rej[roc_resolution - 1 - i] - test_std_rej[roc_resolution - 1 - i]
-    )
-
-g_vert_band.SetFillColorAlpha(ROOT.kBlue, 0.3)
-g_vert_band.SetLineColor(0)
-
+#g_vert_band = ROOT.TGraph(2*roc_resolution)
+#
+#for i in range(roc_resolution): # upper edge, vertical
+#    g_vert_band.SetPoint(
+#        i,
+#        eval_eff[i],
+#        eval_rej[i] + test_std_rej[i]
+#    )
+#
+#for i in range(roc_resolution): # lower edge, vertical (reverse order to ensure shape closure)
+#    g_vert_band.SetPoint(
+#        roc_resolution + i,
+#        eval_eff[roc_resolution - 1 - i],
+#        eval_rej[roc_resolution - 1 - i] - test_std_rej[roc_resolution - 1 - i]
+#    )
+#
+#g_vert_band.SetFillColorAlpha(ROOT.kBlue, 0.3)
+#g_vert_band.SetLineColor(0)
+#
 g_horz_band = ROOT.TGraph(2*roc_resolution)
 
 for i in range(roc_resolution): # upper edge, horizontal
@@ -175,18 +175,17 @@ g_eval.SetLineWidth(2)
 c = ROOT.TCanvas(f"roc_{kfcv_tag}", f"BDT ROC Curve {kfcv_tag}", 800, 600)
 c.cd()
 
-g_vert_band.SetTitle(f"BDT ROC Curve {kfcv_tag}")
+g_horz_band.SetTitle(f"BDT ROC Curve {kfcv_tag}")
 
-g_vert_band.Draw("AF")
 g_horz_band.Draw("AF")
-g_eval.Draw("L SAME")
+#g_eval.Draw("L SAME")
 
-g_vert_band.GetXaxis().SetTitle("Signal efficiency")
-g_vert_band.GetYaxis().SetTitle("Background rejection")
+g_horz_band.GetXaxis().SetTitle("Signal efficiency")
+g_horz_band.GetYaxis().SetTitle("Background rejection")
 
 legend = ROOT.TLegend(0.12, 0.12, 0.35, 0.25)
-legend.AddEntry(g_eval, "Held-out evaluation sample", "l")
-legend.AddEntry(g_vert_band, "#pm1#sigma TPR at fixed FPR across folds", "f")
+#legend.AddEntry(g_eval, "Held-out evaluation sample", "l")
+legend.AddEntry(g_horz_band, "#pm1#sigma TPR at fixed FPR across folds", "f")
 legend.SetBorderSize(0)
 legend.Draw()
 
@@ -198,7 +197,7 @@ c.SaveAs(f"{kfcv_tag}_rocc.pdf")
 out_file.cd()
 
 c.Write()
-g_vert_band.Write()
+#g_vert_band.Write()
 g_horz_band.Write()
 g_eval.Write()
 

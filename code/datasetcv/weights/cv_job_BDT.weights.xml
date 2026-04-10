@@ -4,11 +4,11 @@
     <Info name="TMVA Release" value="4.2.1 [262657]"/>
     <Info name="ROOT Release" value="6.30/06 [400902]"/>
     <Info name="Creator" value="jashley"/>
-    <Info name="Date" value="Tue Mar 10 06:19:34 2026"/>
+    <Info name="Date" value="Tue Apr  7 12:18:57 2026"/>
     <Info name="Host" value="Linux runner-z8jooa6tn-project-190437-concurrent-0-p18ptnml 6.6.13-200.fc39.x86_64 #1 SMP PREEMPT_DYNAMIC Sat Jan 20 18:03:28 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux"/>
     <Info name="Dir" value="/global/cfs/cdirs/atlas/jashley/mjolnir/beta/code"/>
     <Info name="Training events" value="17483"/>
-    <Info name="TrainingTime" value="2.14576721e-06"/>
+    <Info name="TrainingTime" value="1.50203705e-05"/>
     <Info name="AnalysisType" value="Classification"/>
   </GeneralInfo>
   <Options>

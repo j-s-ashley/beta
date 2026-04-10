@@ -1,0 +1,502 @@
+Total evaluation signal entries: 4668
+Total evaluation background entries: 29693
+
+
+>= -0.8 cut results:
+Signal remaining ratio: 0.9993573264781491
+Background remaining ratio: 0.9226753780352271
+
+
+>= -0.7868686868686869 cut results:
+Signal remaining ratio: 0.9989288774635818
+Background remaining ratio: 0.8936786447984374
+
+
+>= -0.7737373737373738 cut results:
+Signal remaining ratio: 0.9985004284490145
+Background remaining ratio: 0.8584514868824302
+
+
+>= -0.7606060606060606 cut results:
+Signal remaining ratio: 0.9978577549271637
+Background remaining ratio: 0.8198228538712828
+
+
+>= -0.7474747474747475 cut results:
+Signal remaining ratio: 0.9974293059125964
+Background remaining ratio: 0.7809247970902233
+
+
+>= -0.7343434343434344 cut results:
+Signal remaining ratio: 0.9967866323907455
+Background remaining ratio: 0.7418246724817297
+
+
+>= -0.7212121212121212 cut results:
+Signal remaining ratio: 0.9957155098543273
+Background remaining ratio: 0.7007712255413734
+
+
+>= -0.7080808080808081 cut results:
+Signal remaining ratio: 0.9948586118251928
+Background remaining ratio: 0.6610648974505776
+
+
+>= -0.694949494949495 cut results:
+Signal remaining ratio: 0.9944301628106256
+Background remaining ratio: 0.622065806755801
+
+
+>= -0.6818181818181819 cut results:
+Signal remaining ratio: 0.993573264781491
+Background remaining ratio: 0.5837739534570437
+
+
+>= -0.6686868686868688 cut results:
+Signal remaining ratio: 0.9931448157669237
+Background remaining ratio: 0.5489846091671438
+
+
+>= -0.6555555555555556 cut results:
+Signal remaining ratio: 0.9925021422450728
+Background remaining ratio: 0.5196510962179638
+
+
+>= -0.6424242424242425 cut results:
+Signal remaining ratio: 0.9922879177377892
+Background remaining ratio: 0.4898797696426767
+
+
+>= -0.6292929292929293 cut results:
+Signal remaining ratio: 0.9914310197086547
+Background remaining ratio: 0.4632741723638568
+
+
+>= -0.6161616161616161 cut results:
+Signal remaining ratio: 0.9905741216795202
+Background remaining ratio: 0.4382177617620315
+
+
+>= -0.603030303030303 cut results:
+Signal remaining ratio: 0.989502999143102
+Background remaining ratio: 0.41588926683056615
+
+
+>= -0.5898989898989899 cut results:
+Signal remaining ratio: 0.988860325621251
+Background remaining ratio: 0.3951099585760954
+
+
+>= -0.5767676767676768 cut results:
+Signal remaining ratio: 0.9877892030848329
+Background remaining ratio: 0.375374667430034
+
+
+>= -0.5636363636363637 cut results:
+Signal remaining ratio: 0.9860754070265638
+Background remaining ratio: 0.35570673222645066
+
+
+>= -0.5505050505050505 cut results:
+Signal remaining ratio: 0.9852185089974294
+Background remaining ratio: 0.33661132253393056
+
+
+>= -0.5373737373737374 cut results:
+Signal remaining ratio: 0.9843616109682948
+Background remaining ratio: 0.31953659111575117
+
+
+>= -0.5242424242424243 cut results:
+Signal remaining ratio: 0.9837189374464439
+Background remaining ratio: 0.3032701310073081
+
+
+>= -0.5111111111111111 cut results:
+Signal remaining ratio: 0.9826478149100257
+Background remaining ratio: 0.2889906712019668
+
+
+>= -0.49797979797979797 cut results:
+Signal remaining ratio: 0.9817909168808912
+Background remaining ratio: 0.27440810965547435
+
+
+>= -0.48484848484848486 cut results:
+Signal remaining ratio: 0.9811482433590403
+Background remaining ratio: 0.26184622638332267
+
+
+>= -0.47171717171717176 cut results:
+Signal remaining ratio: 0.9800771208226221
+Background remaining ratio: 0.24770147846293739
+
+
+>= -0.4585858585858586 cut results:
+Signal remaining ratio: 0.9794344473007712
+Background remaining ratio: 0.23443235779476645
+
+
+>= -0.44545454545454544 cut results:
+Signal remaining ratio: 0.9785775492716366
+Background remaining ratio: 0.2227461017748291
+
+
+>= -0.43232323232323233 cut results:
+Signal remaining ratio: 0.9775064267352185
+Background remaining ratio: 0.21065571010002357
+
+
+>= -0.4191919191919192 cut results:
+Signal remaining ratio: 0.9768637532133676
+Background remaining ratio: 0.20011450510221265
+
+
+>= -0.40606060606060607 cut results:
+Signal remaining ratio: 0.9755784061696658
+Background remaining ratio: 0.19021318155794295
+
+
+>= -0.3929292929292929 cut results:
+Signal remaining ratio: 0.9751499571550986
+Background remaining ratio: 0.18000875627252214
+
+
+>= -0.3797979797979798 cut results:
+Signal remaining ratio: 0.9747215081405313
+Background remaining ratio: 0.17105041592294482
+
+
+>= -0.3666666666666667 cut results:
+Signal remaining ratio: 0.9736503856041131
+Background remaining ratio: 0.16226046542956252
+
+
+>= -0.35353535353535354 cut results:
+Signal remaining ratio: 0.9712939160239932
+Background remaining ratio: 0.15545751523928197
+
+
+>= -0.3404040404040404 cut results:
+Signal remaining ratio: 0.9697943444730077
+Background remaining ratio: 0.1466675647458997
+
+
+>= -0.32727272727272727 cut results:
+Signal remaining ratio: 0.9689374464438731
+Background remaining ratio: 0.13831542787862458
+
+
+>= -0.31414141414141417 cut results:
+Signal remaining ratio: 0.9661525278491859
+Background remaining ratio: 0.13073788434984676
+
+
+>= -0.301010101010101 cut results:
+Signal remaining ratio: 0.9642245072836333
+Background remaining ratio: 0.1241370019870003
+
+
+>= -0.28787878787878785 cut results:
+Signal remaining ratio: 0.9631533847472151
+Background remaining ratio: 0.11884956050247533
+
+
+>= -0.27474747474747474 cut results:
+Signal remaining ratio: 0.9612253641816624
+Background remaining ratio: 0.11211396625467282
+
+
+>= -0.26161616161616164 cut results:
+Signal remaining ratio: 0.9601542416452442
+Background remaining ratio: 0.10652342302899673
+
+
+>= -0.24848484848484853 cut results:
+Signal remaining ratio: 0.9586546700942588
+Background remaining ratio: 0.10140437140066683
+
+
+>= -0.23535353535353531 cut results:
+Signal remaining ratio: 0.9567266495287061
+Background remaining ratio: 0.0962516418010979
+
+
+>= -0.2222222222222222 cut results:
+Signal remaining ratio: 0.9550128534704371
+Background remaining ratio: 0.09106523423028996
+
+
+>= -0.2090909090909091 cut results:
+Signal remaining ratio: 0.9511568123393316
+Background remaining ratio: 0.08675445391169635
+
+
+>= -0.1959595959595959 cut results:
+Signal remaining ratio: 0.9498714652956298
+Background remaining ratio: 0.08220792779442966
+
+
+>= -0.18282828282828278 cut results:
+Signal remaining ratio: 0.9466580976863753
+Background remaining ratio: 0.0780318593607921
+
+
+>= -0.16969696969696968 cut results:
+Signal remaining ratio: 0.9443016281062554
+Background remaining ratio: 0.0737210790421985
+
+
+>= -0.15656565656565657 cut results:
+Signal remaining ratio: 0.9423736075407027
+Background remaining ratio: 0.06947765466608291
+
+
+>= -0.14343434343434347 cut results:
+Signal remaining ratio: 0.9378748928877464
+Background remaining ratio: 0.06614353551342067
+
+
+>= -0.13030303030303025 cut results:
+Signal remaining ratio: 0.9329477292202228
+Background remaining ratio: 0.0629778062169535
+
+
+>= -0.11717171717171715 cut results:
+Signal remaining ratio: 0.9299485861182519
+Background remaining ratio: 0.06018253460411545
+
+
+>= -0.10404040404040404 cut results:
+Signal remaining ratio: 0.9256640959725793
+Background remaining ratio: 0.05725255110632135
+
+
+>= -0.09090909090909083 cut results:
+Signal remaining ratio: 0.9226649528706083
+Background remaining ratio: 0.05398578789613714
+
+
+>= -0.07777777777777772 cut results:
+Signal remaining ratio: 0.9170951156812339
+Background remaining ratio: 0.051459940053211195
+
+
+>= -0.06464646464646462 cut results:
+Signal remaining ratio: 0.9132390745501285
+Background remaining ratio: 0.048462600612939076
+
+
+>= -0.051515151515151514 cut results:
+Signal remaining ratio: 0.9085261353898886
+Background remaining ratio: 0.04586939682753511
+
+
+>= -0.03838383838383841 cut results:
+Signal remaining ratio: 0.9042416452442159
+Background remaining ratio: 0.043040447243458055
+
+
+>= -0.025252525252525193 cut results:
+Signal remaining ratio: 0.8982433590402742
+Background remaining ratio: 0.04064931128548816
+
+
+>= -0.012121212121212088 cut results:
+Signal remaining ratio: 0.8886032562125107
+Background remaining ratio: 0.03839288721247432
+
+
+>= 0.0010101010101010166 cut results:
+Signal remaining ratio: 0.8796058269065982
+Background remaining ratio: 0.03556393762839727
+
+
+>= 0.014141414141414232 cut results:
+Signal remaining ratio: 0.8710368466152528
+Background remaining ratio: 0.033610615296534536
+
+
+>= 0.027272727272727337 cut results:
+Signal remaining ratio: 0.8628963153384748
+Background remaining ratio: 0.03145522513723773
+
+
+>= 0.04040404040404044 cut results:
+Signal remaining ratio: 0.8536846615252784
+Background remaining ratio: 0.029670292661570067
+
+
+>= 0.05353535353535355 cut results:
+Signal remaining ratio: 0.8444730077120822
+Background remaining ratio: 0.027784326272185363
+
+
+>= 0.06666666666666665 cut results:
+Signal remaining ratio: 0.8322622107969152
+Background remaining ratio: 0.025999393796517698
+
+
+>= 0.07979797979797987 cut results:
+Signal remaining ratio: 0.8161953727506427
+Background remaining ratio: 0.02445020711952312
+
+
+>= 0.09292929292929297 cut results:
+Signal remaining ratio: 0.8052699228791774
+Background remaining ratio: 0.02276630855757249
+
+
+>= 0.10606060606060608 cut results:
+Signal remaining ratio: 0.7889888603256212
+Background remaining ratio: 0.021250799851816927
+
+
+>= 0.1191919191919193 cut results:
+Signal remaining ratio: 0.773350471293916
+Background remaining ratio: 0.02000471491597346
+
+
+>= 0.1323232323232324 cut results:
+Signal remaining ratio: 0.760497000856898
+Background remaining ratio: 0.018320816354022832
+
+
+>= 0.1454545454545455 cut results:
+Signal remaining ratio: 0.7427163667523564
+Background remaining ratio: 0.016973697504462332
+
+
+>= 0.1585858585858586 cut results:
+Signal remaining ratio: 0.7245072836332477
+Background remaining ratio: 0.015929680396052942
+
+
+>= 0.1717171717171717 cut results:
+Signal remaining ratio: 0.7039417309340189
+Background remaining ratio: 0.014885663287643552
+
+
+>= 0.18484848484848493 cut results:
+Signal remaining ratio: 0.684018851756641
+Background remaining ratio: 0.013302798639409962
+
+
+>= 0.19797979797979803 cut results:
+Signal remaining ratio: 0.6645244215938303
+Background remaining ratio: 0.012427171387195636
+
+
+>= 0.21111111111111125 cut results:
+Signal remaining ratio: 0.6448157669237361
+Background remaining ratio: 0.01155154413498131
+
+
+>= 0.22424242424242435 cut results:
+Signal remaining ratio: 0.6283204798628963
+Background remaining ratio: 0.010440171084093895
+
+
+>= 0.23737373737373746 cut results:
+Signal remaining ratio: 0.6077549271636675
+Background remaining ratio: 0.009564543831879567
+
+
+>= 0.25050505050505056 cut results:
+Signal remaining ratio: 0.586975149957155
+Background remaining ratio: 0.008587882665948203
+
+
+>= 0.26363636363636367 cut results:
+Signal remaining ratio: 0.5640531276778064
+Background remaining ratio: 0.007644899471255851
+
+
+>= 0.2767676767676768 cut results:
+Signal remaining ratio: 0.5419880034275921
+Background remaining ratio: 0.00683662816151955
+
+
+>= 0.2898989898989899 cut results:
+Signal remaining ratio: 0.5201371036846615
+Background remaining ratio: 0.005961000909305223
+
+
+>= 0.303030303030303 cut results:
+Signal remaining ratio: 0.49464438731790916
+Background remaining ratio: 0.0052200855420469474
+
+
+>= 0.3161616161616163 cut results:
+Signal remaining ratio: 0.47257926306769493
+Background remaining ratio: 0.004647560030983733
+
+
+>= 0.3292929292929294 cut results:
+Signal remaining ratio: 0.4522279348757498
+Background remaining ratio: 0.00420974640487657
+
+
+>= 0.3424242424242425 cut results:
+Signal remaining ratio: 0.4297343616109683
+Background remaining ratio: 0.003704576836291382
+
+
+>= 0.3555555555555556 cut results:
+Signal remaining ratio: 0.4087403598971722
+Background remaining ratio: 0.003468831037618294
+
+
+>= 0.36868686868686873 cut results:
+Signal remaining ratio: 0.389031705227078
+Background remaining ratio: 0.0030646953827501433
+
+
+>= 0.38181818181818183 cut results:
+Signal remaining ratio: 0.3684661525278492
+Background remaining ratio: 0.00276159364159903
+
+
+>= 0.39494949494949494 cut results:
+Signal remaining ratio: 0.35154241645244216
+Background remaining ratio: 0.0024921698716869295
+
+
+>= 0.40808080808080827 cut results:
+Signal remaining ratio: 0.33204798628963156
+Background remaining ratio: 0.0019533223318627287
+
+
+>= 0.42121212121212137 cut results:
+Signal remaining ratio: 0.3086975149957155
+Background remaining ratio: 0.0017512545044286532
+
+
+>= 0.4343434343434345 cut results:
+Signal remaining ratio: 0.2870608397600686
+Background remaining ratio: 0.0016502205907116155
+
+
+>= 0.4474747474747476 cut results:
+Signal remaining ratio: 0.269280205655527
+Background remaining ratio: 0.0014144747920385276
+
+
+>= 0.4606060606060607 cut results:
+Signal remaining ratio: 0.2512853470437018
+Background remaining ratio: 0.001145051022126427
+
+
+>= 0.4737373737373738 cut results:
+Signal remaining ratio: 0.23307626392459296
+Background remaining ratio: 0.0009766611659313643
+
+
+>= 0.4868686868686869 cut results:
+Signal remaining ratio: 0.21765209940017138
+Background remaining ratio: 0.0008756272522143266
+
+
+>= 0.5 cut results:
+Signal remaining ratio: 0.20222793487574978
+Background remaining ratio: 0.000774593338497289

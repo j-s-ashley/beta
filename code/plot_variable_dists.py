@@ -1,7 +1,6 @@
 import ROOT
 import math
 import argparse
-from ROOT import TMVA
 from dataclasses import dataclass
 
 def get_ttree_clusters(t):
@@ -28,12 +27,6 @@ def normalize_in_place(h):
     integ = h.Integral()
     if integ > 0:
         h.Scale(1.0 / integ)
-
-# Initialize TMVA
-TMVA.Tools.Instance()
-factory = TMVA.Factory("TMVAClassification", output_file,
-        "!V:!Silent:Color:DrawProgressBar:Transformations=I;:AnalysisType=Classification")
-dataloader = TMVA.DataLoader("dataset")
 
 @dataclass(frozen=True)
 class Variable:
@@ -175,25 +168,26 @@ variables |= make_pixelhit_vars(
     xmax=5.2,
 )
 
-# Load input variables
-for v_id, _ in variables.items():
-    dataloader.AddVariable(v_id, "F")
-
 # --- INPUT VARIABLE DISTRIBUTIONS --- #
 input_path_stub    = "/global/cfs/projectdirs/atlas/jashley/mjolnir/beta/data/MAIA"
-datasets           = ["sig_trng", "sig_eval", "bkg_trng", "bkg_eval"]
+datasets           = ["trng", "eval"]
 sensor_thicknesses = [50, 75, 100, 200, 400]
 n_bins             = 50
-ROOT.gStyle.SetOptStat(0)
+#ROOT.gStyle.SetOptStat(0)
 
-for v_id, v in variables.items():
+for sensor_thickness in sensor_thicknesses:
     for dataset in datasets:
-        for sensor_thickness in sensor_thicknesses:
+        out_file = ROOT.TFile(f"{sensor_thickness}_{dataset}.root", "UPDATE")
+        out_file.cd()
+        for v_id, v in variables.items():
             # Load signal and background files
-            sig_file = ROOT.TFile(f"{input_path_stub}/signal/{sensor_thickness}_{dataset}_ttree.root")
-            bkg_file = ROOT.TFile(f"{input_path_stub}/bg/{sensor_thickness}_{dataset}_ttree.root")
-            sig_tree = sig_file.Get("HitTree")
-            bkg_tree = bkg_file.Get("HitTree")
+            sig_file = ROOT.TFile(f"{input_path_stub}/signal/{sensor_thickness}_sig_{dataset}_ttree.root")
+            bkg_file = ROOT.TFile(f"{input_path_stub}/bg/{sensor_thickness}_bkg_{dataset}_ttree.root")
+            in_sig_tree = sig_file.Get("HitTree")
+            in_bkg_tree = bkg_file.Get("HitTree")
+
+            sig_tree = in_sig_tree.Clone()
+            bkg_tree = in_bkg_tree.Clone()
 
             x_min = v.xmin
             x_max = v.xmax
@@ -247,5 +241,8 @@ for v_id, v in variables.items():
             c.Modified()
             c.Update()
 
-            c.SaveAs(f"{v_id}_dist.png")
+            c.SaveAs(f"{sensor_thickness}_{v_id}_dist.png")
             c.Write()
+            
+            del c
+        out_file.Close()

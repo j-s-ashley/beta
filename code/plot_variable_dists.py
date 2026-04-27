@@ -173,76 +173,67 @@ input_path_stub    = "/global/cfs/projectdirs/atlas/jashley/mjolnir/beta/data/MA
 datasets           = ["trng", "eval"]
 sensor_thicknesses = [50, 75, 100, 200, 400]
 n_bins             = 50
-#ROOT.gStyle.SetOptStat(0)
+ROOT.gStyle.SetOptStat(0)
 
 for sensor_thickness in sensor_thicknesses:
     for dataset in datasets:
-        out_file = ROOT.TFile(f"{sensor_thickness}_{dataset}.root", "UPDATE")
-        out_file.cd()
+        out_file = ROOT.TFile(f"{sensor_thickness}_{dataset}.root", "RECREATE")
+        if not out_file or out_file.IsZombie():
+            raise RuntimeError("Could not create output file")
+
+        sig_file = ROOT.TFile(f"{input_path_stub}/signal/{sensor_thickness}_sig_{dataset}_ttree.root", "READ")
+        bkg_file = ROOT.TFile(f"{input_path_stub}/bg/{sensor_thickness}_bkg_{dataset}_ttree.root", "READ")
+        if sig_file.IsZombie() or bkg_file.IsZombie():
+            raise RuntimeError("Bad input file")
+
+        sig_tree = sig_file.Get("HitTree")
+        bkg_tree = bkg_file.Get("HitTree")
+        if not sig_tree or not bkg_tree:
+            raise RuntimeError("HitTree not found")
+
         for v_id, v in variables.items():
-            # Load signal and background files
-            sig_file = ROOT.TFile(f"{input_path_stub}/signal/{sensor_thickness}_sig_{dataset}_ttree.root")
-            bkg_file = ROOT.TFile(f"{input_path_stub}/bg/{sensor_thickness}_bkg_{dataset}_ttree.root")
-            in_sig_tree = sig_file.Get("HitTree")
-            in_bkg_tree = bkg_file.Get("HitTree")
+            tag = f"{sensor_thickness}_{dataset}"
+            h_sig_name = f"h_sig_{tag}_{v_id}"
+            h_bkg_name = f"h_bkg_{tag}_{v_id}"
 
-            sig_tree = in_sig_tree.Clone()
-            bkg_tree = in_bkg_tree.Clone()
+            h_sig = ROOT.TH1F(h_sig_name, f"{sensor_thickness} #mum", n_bins, v.xmin, v.xmax)
+            h_bkg = ROOT.TH1F(h_bkg_name, f"{sensor_thickness} #mum", n_bins, v.xmin, v.xmax)
 
-            x_min = v.xmin
-            x_max = v.xmax
-            y_max = v.ymax
-
-            h_sig_name = f"h_sig_{v_id}"
-            h_bkg_name = f"h_bkg_{v_id}"
-
-            h_sig = ROOT.TH1F(h_sig_name, f"{sensor_thickness} #mum", n_bins, x_min, x_max)
-            h_bkg = ROOT.TH1F(h_bkg_name, f"Normalized {v.label} (signal vs background)", n_bins, x_min, x_max)
-
-            # Fill hists from original trees
             sig_tree.Draw(f"{v_id}>>{h_sig_name}", "", "goff")
             bkg_tree.Draw(f"{v_id}>>{h_bkg_name}", "", "goff")
 
-            # Pretty plots
-            c = ROOT.TCanvas(f"c_{v_id}", f"{v_id} signal vs background", 800, 600)
-            c.cd()
+            normalize_in_place(h_sig)
+            normalize_in_place(h_bkg)
+
+            c = ROOT.TCanvas(f"c_{tag}_{v_id}", f"{v_id}", 800, 600)
+            if v.yscale == "log":
+                c.SetLogy(True)
 
             h_sig.SetLineColor(ROOT.kRed)
             h_bkg.SetLineColor(ROOT.kBlue)
             h_sig.SetLineWidth(2)
             h_bkg.SetLineWidth(2)
 
-            # Fix axis issues by normalizing manually
-            normalize_in_place(h_sig)
-            normalize_in_place(h_bkg)
+            h_sig.SetMaximum(v.ymax)
+            h_sig.GetXaxis().SetTitle(v.label)
+            h_sig.GetYaxis().SetTitle("Normalized entries")
 
-            h_sig.SetMaximum(y_max)
-            h_sig.GetXaxis().SetTitle(f"{v.label}")
-            h_sig.GetYaxis().SetTitle("Normalized number of clusters")
-
-            if v.yscale == "log":
-                ROOT.gPad.SetLogy(1)
-
-            h_sig.Draw("HIST F")
-            h_bkg.Draw("HIST F SAME")
-            h_sig.Draw("HIST SAME")
+            h_sig.Draw("HIST")
             h_bkg.Draw("HIST SAME")
 
-            if v.legend == "right":
-                leg = ROOT.TLegend(0.7, 0.65, 0.9, 0.8)
-            else:
-                leg = ROOT.TLegend(0.4, 0.65, 0.6, 0.8)
-            leg.AddEntry(h_sig, "Signal", "f")
-            leg.AddEntry(h_bkg, "Background", "f")
+            leg = ROOT.TLegend(0.7, 0.65, 0.9, 0.8) if v.legend == "right" else ROOT.TLegend(0.4, 0.65, 0.6, 0.8)
             leg.SetBorderSize(0)
             leg.SetFillStyle(0)
+            leg.AddEntry(h_sig, "Signal", "l")
+            leg.AddEntry(h_bkg, "Background", "l")
             leg.Draw()
 
-            c.Modified()
-            c.Update()
-
-            c.SaveAs(f"{sensor_thickness}_{v_id}_dist.png")
+            c.SaveAs(f"{tag}_{v_id}_dist.png")
+            out_file.cd()
+            h_sig.Write()
+            h_bkg.Write()
             c.Write()
-            
-            del c
+
+        sig_file.Close()
+        bkg_file.Close()
         out_file.Close()

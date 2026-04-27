@@ -1,0 +1,8 @@
+Error in <TFile::ReadBuffer>: error reading all requested bytes from file 50_trng.root, got 220 of 300
+Error in <TFile::Init>: 50_trng.root failed to read the file type data.
+Traceback (most recent call last):
+  File "/global/cfs/cdirs/atlas/jashley/mjolnir/beta/code/plot_variable_dists.py", line 180, in <module>
+    out_file = ROOT.TFile(f"{sensor_thickness}_{dataset}.root", "UPDATE")
+  File "/opt/spack/opt/spack/linux-almalinux9-x86_64/gcc-11.3.1/root-6.30.06-ufi3jor5elnk5w677vdhr4r7bpj4evkv/lib/root/ROOT/_pythonization/_tfile.py", line 90, in _TFileConstructor
+    raise OSError('Failed to open file {}'.format(args[0]))
+OSError: Failed to open file 50_trng.root

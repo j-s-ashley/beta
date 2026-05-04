@@ -111,7 +111,7 @@ class BDTConfig:
 def make_initial_pool(*, pool_size=60, seed=123):
     """
     Random search for configs (better than full grid for high-dim).
-    You can increase pool_size based on compute budget.
+    Increase pool_size per computational budget.
     """
     rng = random.Random(seed)
     pool = []

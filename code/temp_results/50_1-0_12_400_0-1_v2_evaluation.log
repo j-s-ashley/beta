@@ -1,0 +1,4 @@
+Evaluation ROC AUC (Signal efficiency vs Background rejection) = 0.976
+Mon Apr 27 11:44:39 PDT 2026
+Folds Thickness MinNodeSize MaxDepth NTrees beta
+5 50 1.0% 12 400 0.1

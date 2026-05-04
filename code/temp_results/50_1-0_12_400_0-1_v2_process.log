@@ -1,0 +1,5 @@
+Evaluation ROC AUC: 0.976
+CrossValidation test mean ROC AUC: 0.850
+Mon Apr 27 11:44:44 PDT 2026
+Folds Thickness MinNodeSize MaxDepth NTrees beta
+5 50 1.0% 12 400 0.1
